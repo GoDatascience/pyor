@@ -1,9 +1,7 @@
-from mrq import context
-from mrq.job import Job
-from mrq.task import Task
-
 import rpy2.rinterface as ri
 import rpy2.robjects as ro
+from mrq import context
+from mrq.job import Job
 
 from mreq.tasks.base import BaseTask
 
