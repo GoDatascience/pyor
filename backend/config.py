@@ -1,1 +1,1 @@
-DEBUG = True
+#DEBUG = True #Duplicates workers
