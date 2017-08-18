@@ -1,10 +1,10 @@
 """ Redis and MongoDB settings
 """
 #MongoDB settings
-MONGODB_JOBS = "mongodb://127.0.0.1:27017/mrq" # MongoDB URI for the jobs, scheduled_jobs & workers database.Defaults to mongodb://127.0.0.1:27017/mrq
+MONGODB_JOBS = "mongodb://mongo:27017/mrq" # MongoDB URI for the jobs, scheduled_jobs & workers database.Defaults to mongodb://127.0.0.1:27017/mrq
 
 #Redis settings
-REDIS = "redis://127.0.0.1:6379"
+REDIS = "redis://redis:6379"
 
 """General MrQ settings
 """

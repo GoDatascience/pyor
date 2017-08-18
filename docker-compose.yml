@@ -1,0 +1,27 @@
+version: '2'
+services:
+  backend:
+    build: ./backend
+    ports:
+      - 5000:5000
+      - 5555:5555
+    depends_on:
+      - mongodb
+    volumes:
+      - ./backend:/opt/mreq/backend:ro
+      - data:/var/mreq
+    links:
+      - mongodb
+      - redis
+  mongodb:
+    image: mongo:latest
+    volumes:
+      - mongo_data:/data/db
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis_data:/data
+volumes:
+  data:
+  mongo_data:
+  redis_data:
