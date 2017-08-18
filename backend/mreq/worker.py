@@ -4,6 +4,7 @@ from typing import List
 
 from mrq import config
 from mrq.context import set_current_config
+from mrq.exceptions import StopRequested
 from mrq.utils import load_class_by_path
 from multiprocessing import Process
 
@@ -24,7 +25,10 @@ def start_worker(name: str, queues: List[str]):
 
     w = worker_class()
 
-    exitcode = w.work()
+    try:
+        exitcode = w.work()
+    except StopRequested:
+        exitcode = 0
 
     sys.exit(exitcode)
 
