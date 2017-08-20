@@ -12,7 +12,8 @@ RUN conda env create -f /tmp/environment.yml -n mreq
 
 ENV MREQ_BACKEND=/opt/mreq/backend \
     MREQ_DATA=/var/mreq \
-    MREQ_ENV=/opt/conda/envs/mreq
+    MREQ_ENV=/opt/conda/envs/mreq \
+    SUPERVISOR_ENABLED=True
 
 ENV PYTHON=$MREQ_ENV/bin/python \
     PATH=$MREQ_ENV/bin:$PATH
