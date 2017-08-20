@@ -1,10 +1,6 @@
-import multiprocessing
-
 from flask import Flask
 from flask_script import Manager
 from mrq import context
-
-from mreq import worker
 
 # Flask
 app = Flask(__name__)
@@ -15,10 +11,11 @@ manager = Manager(app)
 @manager.command
 def runserver():
     # MRQ
-    context.setup_context()
-    worker.start_workers_in_new_process("SequentialWorker", 1, "sequential")
-    worker.start_workers_in_new_process("ParallelWorker", (multiprocessing.cpu_count()-1), "parallel")
+    context.setup_context(file_path="workers/mrqconfig.py")
+    # workers.start_workers()
+    # workers.start_workers_in_new_process("SequentialWorker", 1, "sequential")
+    # workers.start_workers_in_new_process("ParallelWorker", (multiprocessing.cpu_count() - 1), "parallel")
     # Flask
-    app.run()
+    app.run(host='0.0.0.0')
 
 from mreq.controllers import index

@@ -1,26 +1,35 @@
-FROM frolvlad/alpine-glibc:latest
+FROM continuumio/miniconda3
 
 MAINTAINER fernandocamargoti <fernando.camargo.ti@gmail.com>
 
-ENV PATH=/opt/conda/bin:$PATH \
-    ANACONDA=Anaconda3-4.4.0-Linux-x86_64.sh \
-    MREQ_BACKEND=/opt/mreq/backend \
-    MREQ_DATA=/var/mreq
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    supervisor
 
-RUN apk add --no-cache --virtual=build-deps --update-cache gcc musl-dev linux-headers \
-    wget bash \
-    && wget -q --no-check-certificate https://repo.continuum.io/archive/$ANACONDA \
-    && /bin/bash $ANACONDA -b -p /opt/conda \
-    && rm $ANACONDA
+# Use the environment.yml to create the conda environment.
+ADD environment.yml /tmp/environment.yml
+RUN conda env create -f /tmp/environment.yml -n mreq
 
-ADD ./environment.yml .
-RUN conda env update
+ENV MREQ_BACKEND=/opt/mreq/backend \
+    MREQ_DATA=/var/mreq \
+    MREQ_ENV=/opt/conda/envs/mreq
 
-WORKDIR $MREQ_BACKEND
+ENV PYTHON=$MREQ_ENV/bin/python \
+    PATH=$MREQ_ENV/bin:$PATH
+
+ADD supervisord.conf /tmp/supervisord/supervisord.conf
+ADD append_workers_to_supervisord.py /tmp/supervisord/append_workers_to_supervisord.py
+ADD workers /tmp/supervisord/workers
+
+WORKDIR /tmp/supervisord
+RUN $PYTHON append_workers_to_supervisord.py > /etc/supervisor/conf.d/supervisord.conf
+
+WORKDIR /root
+RUN rm -r /tmp/supervisord
 
 VOLUME ["$MREQ_BACKEND", "$MREQ_DATA"]
 
 # Flask and Dashboard
 EXPOSE 5000 5555
 
-CMD python manage.py runserver
+CMD [ "/usr/bin/supervisord" ]
