@@ -108,3 +108,6 @@ celerybeat-schedule
 .venv
 venv/
 ENV/
+
+#nvidia-docker-compose
+/nvidia-docker-compose.yml
