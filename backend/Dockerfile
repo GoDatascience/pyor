@@ -1,10 +1,17 @@
-FROM continuumio/miniconda3
+FROM nvidia/cuda:8.0-cudnn7-devel
 
 MAINTAINER fernandocamargoti <fernando.camargo.ti@gmail.com>
 
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    supervisor
+RUN apt-get update && \
+    apt-get install -y curl build-essential libpng12-dev libffi-dev supervisor && \
+    apt-get clean && \
+    rm -rf /var/tmp /tmp /var/lib/apt/lists/*
+
+RUN curl -sSL -o miniconda.sh https://repo.continuum.io/miniconda/Miniconda3-4.3.21-Linux-x86_64.sh && \
+    /bin/bash miniconda.sh -b -p /opt/conda && \
+    rm miniconda.sh
+
+ENV PATH=/opt/conda/bin:$PATH
 
 # Use the environment.yml to create the conda environment.
 ADD environment.yml /tmp/environment.yml
@@ -15,15 +22,14 @@ ENV MREQ_BACKEND=/opt/mreq/backend \
     MREQ_ENV=/opt/conda/envs/mreq \
     SUPERVISOR_ENABLED=True
 
-ENV PYTHON=$MREQ_ENV/bin/python \
-    PATH=$MREQ_ENV/bin:$PATH
+ENV PATH=$MREQ_ENV/bin:$PATH
 
 ADD supervisord.conf /tmp/supervisord/supervisord.conf
 ADD append_workers_to_supervisord.py /tmp/supervisord/append_workers_to_supervisord.py
 ADD workers /tmp/supervisord/workers
 
 WORKDIR /tmp/supervisord
-RUN $PYTHON append_workers_to_supervisord.py > /etc/supervisor/conf.d/supervisord.conf
+RUN python append_workers_to_supervisord.py > /etc/supervisor/conf.d/supervisord.conf
 
 WORKDIR /root
 RUN rm -r /tmp/supervisord
