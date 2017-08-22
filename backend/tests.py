@@ -1,4 +1,5 @@
 import os
+import unittest
 
 from mrq import config, context
 from mrq.context import set_current_config
@@ -12,37 +13,54 @@ import mreq.services
 
 import shutil
 
+TEST_TASK = 'test_task'
+
 context.setup_context(file_path="workers/mrqconfig.py")
 collection: Collection = context.connections.mongodb_jobs.mreq_tasks
 
-def cleanup():
-    shutil.rmtree(os.path.join(os.environ["MREQ_DATA"], "tasks"), ignore_errors=True)
-    collection.drop()
+class TestTasksExecution(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        os.environ["MREQ_DATA"] = os.path.join(os.environ["MREQ_DATA"], "tests")
+
+
+    def setUp(self):
+        os.chdir(os.environ["MREQ_BACKEND"])
+        shutil.rmtree(os.path.join(os.environ["MREQ_DATA"], "tasks"), ignore_errors=True)
+        collection.delete_one({"name": TEST_TASK})
+
+    def test_python_slow_fib(self):
+        with open('samples/slow_fib.py', 'rb') as fp:
+            task = create_task(fp)
+            mreq.services.enqueue_job(task.id, {"n": 30}, "sequential")
+
+            result = start_worker()
+            self.assertEqual(result, 5)
+
+    def test_r_randombox(self):
+        with open('samples/randombox.r', 'rb') as fp:
+            task = create_task(fp)
+            mreq.services.enqueue_job(task.id, {"ret": 2, "rept": 1000}, "sequential")
+
+            result = start_worker()
+            self.assertEqual(result, 5)
+
+    def test_r_slowfib(self):
+        with open('samples/draft.r', 'rb') as fp:
+            task = create_task(fp)
+            mreq.services.enqueue_job(task.id, {}, "sequential")
+
+            result = start_worker()
+            self.assertEqual(result, 5)
+
 
 
 def create_task(fp):
     script_file = FileStorage(fp)
-    task: Task = mreq.services.create_task('sample_python_task', script_file, [])
+    task: Task = mreq.services.create_task(TEST_TASK, script_file, [])
     return task
 
-
-def test_python_task():
-    with open('samples/sample_python_task.py', 'rb') as fp:
-        task = create_task(fp)
-        mreq.services.enqueue_job(task.id, {"n": 50}, "sequential")
-
-        result = start_worker()
-        assert result == 5
-
-
-def test_r_task():
-    with open('samples/sample_r_task.r', 'rb') as fp:
-        script_file = FileStorage(fp)
-        task: Task = mreq.services.create_task('sample_r_task', script_file, [])
-        mreq.services.enqueue_job(task.id, {"ret": 2, "rept": 10000}, "sequential")
-
-        result = start_worker()
-        assert result == 5
 
 def start_worker():
     if "GEVENT_RESOLVER" not in os.environ:
@@ -58,6 +76,4 @@ def start_worker():
 
 
 if __name__ == '__main__':
-    cleanup()
-    # test_python_task()
-    test_r_task()
+    unittest.main()

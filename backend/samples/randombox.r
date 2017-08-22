@@ -1,11 +1,11 @@
-urnas = function(ret, rept) {
+randombox = function(ret, rept) {
 
-    bolas=c()
+    balls=c()
     cvd=8
     cvm=2
 
     ma=matrix(1, nrow=rept, ncol=ret)
-    soma=c()
+    total_sum=c()
 
     for(j in 1:rept){
         set_progress(j/rept)
@@ -13,22 +13,22 @@ urnas = function(ret, rept) {
             s=sample(1:cvd+cvm, 1, rep = T)
             if(1<s && s<=cvd){
                 y1=rgeom(1,2/10)+1
-                bolas[i]=1
+                balls[i]=1
                 cvd=cvd+y1-1
                 cvm=cvm+1
             } else{
                 y1=rgeom(1,8/10)+1
-                bolas[i]=0
+                balls[i]=0
                 cvm=cvm+y1-1
                 cvd=cvd+1
             }
 
         }
-        ma[j,]=bolas
-        soma[j]=sum(bolas)
+        ma[j,]=balls
+        total_sum[j]=sum(balls)
     }
 
-    mean(soma)
+    mean(total_sum)
 }
 
-urnas(params[["ret"]],params[["rept"]])
+randombox(params[["ret"]],params[["rept"]])
