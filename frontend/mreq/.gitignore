@@ -43,8 +43,6 @@ npm-debug.log
 /src/typings/tsd/
 /typings/
 /tsd_typings/
-/src/**/*.js
-/src/**/*.js.map
 
 # Dist #
 /dist

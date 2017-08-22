@@ -1,0 +1,18 @@
+<md-toolbar class="app-menu">
+  <a md-button [routerLink]="['/dashboard']" [routerLinkActiveOptions]="{exact: true}"
+     routerLinkActive="app-menu-active">
+    Mr. Queue Dashboard
+  </a>
+  <a md-button [routerLink]="['/add-task']" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="app-menu-active"
+     class="mat-button">
+    Add Task
+  </a>
+  <a md-button [routerLink]="['/add-job']" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="app-menu-active"
+     class="mat-button">
+    Add Job
+  </a>
+  <span class="app-menu-space"></span>
+  <a md-button (click)="logout()">
+    Logout&nbsp;<i class="fa fa-sign-out" aria-hidden="true"></i>
+  </a>
+</md-toolbar>
