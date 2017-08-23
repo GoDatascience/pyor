@@ -18,4 +18,4 @@ def runserver():
     # Flask
     app.run(host='0.0.0.0')
 
-from mreq.controllers import index
+from mreq.controllers import tasks

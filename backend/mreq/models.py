@@ -55,7 +55,11 @@ class Task(object):
 
     def exists(self):
         """ Returns True if a job with the current _id exists in MongoDB. """
-        return bool(collection.find_one({"name": self.name}, projection={"_id": 1}))
+        return Task.exists(self.name)
+
+    @classmethod
+    def exists(cls, name):
+        return bool(collection.find_one({"name": name}, projection={"_id": 1}))
 
     @classmethod
     def insert(cls, task) -> bool:
