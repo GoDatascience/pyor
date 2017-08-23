@@ -1,5 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-export BASE_IMAGE=nvidia/cuda:8.0-cudnn7-devel
+source set_gpu_env.sh
 
-docker-compose build
+nvidia-docker-compose build

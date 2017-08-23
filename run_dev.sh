@@ -1,6 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# dev
-export ENV=dev
+source set_dev_env.sh
 
 docker-compose up
