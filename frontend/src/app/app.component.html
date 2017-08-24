@@ -1,0 +1,16 @@
+<md-toolbar class="app-menu">
+  <a md-button  mdTooltip="View MRQ Dashboard"
+     [routerLink]="['/mrq-dashboard']" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="app-menu-active">
+    <md-icon>web</md-icon>
+  </a>
+  <a md-button mdTooltip="Add a new task!"
+     [routerLink]="['/add-task']" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="app-menu-active" class="mat-button">
+    <md-icon>add_circle_outline</md-icon>
+  </a>
+  <a md-button mdTooltip="Run/Schedule a new job!"
+     [routerLink]="['/add-job']" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="app-menu-active" class="mat-button">
+    <md-icon>play_circle_outline</md-icon>
+  </a>
+</md-toolbar>
+
+<router-outlet></router-outlet>
