@@ -1,4 +1,4 @@
 import os
 
-if os.environ["ENV"] == "dev":
+if os.environ["ENV"] == "development":
     DEBUG = True
