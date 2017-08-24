@@ -1,12 +1,19 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {MdButtonModule, MdToolbarModule} from '@angular/material';
+import {MdButtonModule,
+  MdToolbarModule,
+  MdInputModule,
+  MdSelectModule,
+  MdTooltipModule,
+  MdIconModule} from '@angular/material';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 import {AppComponent} from './app.component';
 import {RouterModule, Routes} from "@angular/router";
 import {MRQDashboardComponent} from './mrq-dashboard/mrq-dashboard.component';
 import {AddTaskComponent} from './add-task/add-task.component';
 import {AddJobComponent} from './add-job/add-job.component';
+import { InputFileComponent } from './input-file/input-file.component';
 
 const appRoutes: Routes = [
   {path: '', redirectTo: '/mrq-dashboard', pathMatch: 'full'},
@@ -21,17 +28,28 @@ const appRoutes: Routes = [
     AppComponent,
     MRQDashboardComponent,
     AddTaskComponent,
-    AddJobComponent
+    AddJobComponent,
+    InputFileComponent
   ],
   imports: [
     BrowserModule,
     MdToolbarModule,
     MdButtonModule,
+    MdInputModule,
+    BrowserAnimationsModule,
+    MdSelectModule,
+    MdIconModule,
+    MdTooltipModule,
     RouterModule.forRoot(appRoutes),
   ],
   exports: [
     MdToolbarModule,
-    MdButtonModule
+    MdButtonModule,
+    MdInputModule,
+    BrowserAnimationsModule,
+    MdSelectModule,
+    MdTooltipModule,
+    MdIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]

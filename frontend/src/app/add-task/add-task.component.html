@@ -1,3 +1,60 @@
-<p>
-  add-task works!
-</p>
+<div class="add-task-container">
+  <h3 class="add-task-container-title mat-title">Add new Task</h3>
+  <div>
+    <label>Task Name</label>
+    <div class="general-data-container">
+      <md-input-container class="field">
+        <input mdInput placeholder="Name" value="My new Task">
+      </md-input-container>
+
+    </div>
+  </div>
+
+  <div>
+    <label>Script file</label>
+    <div class="script-file-container">
+      <input-file (onFileSelect)="onFileSelect($event)" [label]="'Select...'">
+        <span class="nofiles"></span>
+        <span class="selected">{{scriptFileName}}</span>
+      </input-file>
+    </div>
+  </div>
+
+  <div>
+    <label>Auxilar Files</label>
+    <span>TODO</span>
+    <div class="aux-files-container">
+
+    </div>
+  </div>
+
+  <div>
+    <label>Parameters</label>
+    <div class="params-container">
+      <div *ngFor="let param of parameters">
+        <div class="field">
+          <md-input-container class="param-name">
+            <input mdInput placeholder="Name" [value]="param.name">
+          </md-input-container>
+          <md-select placeholder="Type" name="food">
+            <md-option *ngFor="let type of types" [value]="type">
+              {{type}}
+            </md-option>
+          </md-select>
+          <button md-mini-fab class="remove-param" (click)="removeParam(param)"
+                  mdTooltip="Click to remove this parameter!">
+            <md-icon>delete</md-icon>
+          </button>
+        </div>
+      </div>
+      <button md-mini-fab class="add-param" (click)="addParam()" mdTooltip="Click to add a new parameter!">
+        <md-icon>add</md-icon>
+      </button>
+    </div>
+
+  </div>
+
+  <br><br>
+  <button (click)="addTask()" class="add-task-btn-save" md-raised-button>Save</button>
+</div>
+

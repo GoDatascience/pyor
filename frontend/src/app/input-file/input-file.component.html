@@ -1,0 +1,12 @@
+<span>
+  <label>{{label}}</label>
+  &nbsp;
+    <input [accept]="accept" type="file" (change)="onNativeInputFileSelect($event)" #inputFile hidden />
+    <button type="button" md-raised-button (click)="selectFile()">
+        <md-icon>attachment</md-icon>
+        <ng-content *ngIf="!fileCount" select=".nofiles"></ng-content>
+        <span *ngIf="fileCount">
+            <ng-content select=".selected"></ng-content>
+        </span>
+    </button>
+</span>
