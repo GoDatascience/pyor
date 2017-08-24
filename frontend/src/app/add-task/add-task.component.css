@@ -1,0 +1,75 @@
+.add-task-container {
+  background: #fff;
+  border-radius: 2px;
+  margin: 30px auto;
+  width: 40%;
+  padding: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+.add-task-container:hover {
+  box-shadow: 0 24px 38px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.add-task-container-title {
+  margin-top: 10px;
+  font-size: 1.5em;
+  bottom: 5px;
+  color: #575757;
+  text-align: center;
+}
+
+.add-task-container label {
+  color: #575757;
+  font-weight: bold;
+}
+
+.add-task-btn-save {
+  float: right;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  margin-top: -35px;
+}
+
+.field {
+  width: 100%;
+}
+
+.add-param {
+  background: #646464;
+}
+
+.remove-param {
+  background: #646464;
+}
+
+.remove-aux-file {
+  background: #646464;
+}
+
+.general-data-container {
+  margin-top: 20px;
+}
+
+.aux-files-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.script-file-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.params-container {
+  margin-top: 20px;
+}
+
+md-select {
+  width: 30%;
+}
+
+.param-name {
+  width: 50%;
+}

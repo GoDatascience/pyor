@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-export ENV=dev
+export ENV=development

@@ -4,5 +4,5 @@ UPLOAD_FOLDER = "/tmp/mreq/uploads"
 
 ALLOWED_EXTENSIONS = {"txt", "csv", "r", "py", "db", "xls", "xlsx"}
 
-if os.environ["ENV"] == "dev":
+if os.environ["ENV"] == "development":
     DEBUG = True

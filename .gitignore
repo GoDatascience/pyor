@@ -15,6 +15,7 @@
 .idea
 *.iws
 .idea_modules/
+*.iml
 
 *.pyc
 *.db
