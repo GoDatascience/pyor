@@ -33,7 +33,7 @@ class TestTasksExecution(unittest.TestCase):
     def test_python_slow_fib(self):
         with open('samples/slow_fib.py', 'rb') as fp:
             task = create_task(fp)
-            mreq.services.enqueue_job(task.id, {"n": 30}, "sequential")
+            mreq.services.enqueue_job(task, {"n": 30}, "sequential")
 
             result = start_worker()
             self.assertEqual(result, 5)
@@ -41,7 +41,7 @@ class TestTasksExecution(unittest.TestCase):
     def test_r_randombox(self):
         with open('samples/randombox.r', 'rb') as fp:
             task = create_task(fp)
-            mreq.services.enqueue_job(task.id, {"ret": 2, "rept": 1000}, "sequential")
+            mreq.services.enqueue_job(task, {"ret": 2, "rept": 1000}, "sequential")
 
             result = start_worker()
             self.assertEqual(result, 5)
@@ -49,7 +49,7 @@ class TestTasksExecution(unittest.TestCase):
     def test_r_slowfib(self):
         with open('samples/draft.r', 'rb') as fp:
             task = create_task(fp)
-            mreq.services.enqueue_job(task.id, {}, "sequential")
+            mreq.services.enqueue_job(task, {}, "sequential")
 
             result = start_worker()
             self.assertEqual(result, 5)
@@ -58,7 +58,7 @@ class TestTasksExecution(unittest.TestCase):
 
 def create_task(fp):
     script_file = FileStorage(fp)
-    task: Task = mreq.services.create_task(TEST_TASK, script_file, [])
+    task: Task = mreq.services.create_task(TEST_TASK, [], script_file, [])
     return task
 
 

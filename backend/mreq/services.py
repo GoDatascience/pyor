@@ -9,8 +9,9 @@ from mreq.exceptions import TaskNameAlreadyExists
 from mreq.models import Task
 
 
-def create_task(name: str, script_file: FileStorage, auxiliar_files: List[FileStorage]) -> Union[Task, None]:
-    task = Task(name, os.path.basename(script_file.filename))
+def create_task(name: str, param_definitions: List[Dict], script_file: FileStorage,
+                auxiliar_files: List[FileStorage]) -> Union[Task, None]:
+    task = Task(name=name, script_name=os.path.basename(script_file.filename), param_definitions=param_definitions)
     if task.exists():
         raise TaskNameAlreadyExists()
     pathlib.Path(task.working_dir).mkdir(parents=True, exist_ok=True)
@@ -23,10 +24,7 @@ def create_task(name: str, script_file: FileStorage, auxiliar_files: List[FileSt
         return None
 
 
-def enqueue_job(task_id: str, params: Dict, queue: str):
-    task = Task.find_one(task_id)
-    if not task is None:
-        params = {**task.params, **params}
-        job.queue_job("mreq.tasks.python.PythonTask" if ".py" in task.script_name else "mreq.tasks.r.RTask",
-                      params, queue=queue)
-
+def enqueue_job(task: Task, params: Dict, queue: str):
+    params = {**task.params, **params}
+    job.queue_job("mreq.tasks.python.PythonTask" if ".py" in task.script_name else "mreq.tasks.r.RTask",
+                  params, queue=queue)

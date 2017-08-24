@@ -14,7 +14,8 @@ context.setup_context(file_path="workers/mrqconfig.py")
 collection: Collection = context.connections.mongodb_jobs.mreq_tasks
 
 class Task(object):
-    def __init__(self, name: Union[str, None] = None, script_name: Union[str, None] = None, id: Union[str, None] = None, document: Dict = None) -> None:
+    def __init__(self, name: Union[str, None] = None, script_name: Union[str, None] = None,
+                 param_definitions: List[Dict] = [], id: Union[str, None] = None, document: Dict = None) -> None:
         if document:
             self.document = document
         else:
@@ -25,6 +26,7 @@ class Task(object):
 
             self.name = name
             self.script_name = script_name
+            self.param_definitions = param_definitions
 
     @property
     def working_dir(self):
@@ -42,7 +44,7 @@ class Task(object):
 
     @property
     def document(self):
-        document = {"name": self.name, "script_name": self.script_name}
+        document = {"name": self.name, "script_name": self.script_name, "param_definitions": self.param_definitions}
         if not self.id is None:
             document["_id"] = self.id
         return document
@@ -52,6 +54,7 @@ class Task(object):
         self.id = document["_id"]
         self.name = document["name"]
         self.script_name = document["script_name"]
+        self.param_definitions = document["param_definitions"]
 
     def exists(self):
         """ Returns True if a job with the current _id exists in MongoDB. """
