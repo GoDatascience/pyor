@@ -7,7 +7,7 @@ import {Component, Output, EventEmitter, ViewChild, ElementRef, Input} from '@an
 })
 export class InputFileComponent {
   @Input() accept: string;
-  @Input() label: string;
+  @Input() single: boolean = true;
   @Output() onFileSelect: EventEmitter<File[]> = new EventEmitter();
 
   @ViewChild('inputFile') nativeInputFile: ElementRef;

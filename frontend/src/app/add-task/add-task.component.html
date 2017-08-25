@@ -14,17 +14,14 @@
     <label>Script File</label>
     <div class="script-file-container">
       <span>{{scriptFileName}}</span>
-      <input-file (onFileSelect)="onFileSelect($event)" [label]="'Select...'">
+      <input-file (onFileSelect)="onFileSelect($event)">
       </input-file>
     </div>
   </div>
 
   <div>
     <label>Auxilar Files</label>
-    <span>TODO</span>
-    <div class="aux-files-container">
-
-    </div>
+    <app-multi-file-selector></app-multi-file-selector>
   </div>
 
   <div>

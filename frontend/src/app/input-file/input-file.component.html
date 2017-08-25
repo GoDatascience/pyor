@@ -1,5 +1,8 @@
 <span>
-    <input [accept]="accept" type="file" (change)="onNativeInputFileSelect($event)" #inputFile hidden />
+
+    <input *ngIf="single" [accept]="accept" type="file" (change)="onNativeInputFileSelect($event)" #inputFile hidden />
+    <input *ngIf="!single" [accept]="accept" type="file" multiple (change)="onNativeInputFileSelect($event)" #inputFile hidden />
+
     <button class="select-file" md-mini-fab (click)="selectFile()" mdTooltip="Click to select the script file!">
         <md-icon>attachment</md-icon>
     </button>
