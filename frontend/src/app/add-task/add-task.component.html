@@ -11,11 +11,10 @@
   </div>
 
   <div>
-    <label>Script file</label>
+    <label>Script File</label>
     <div class="script-file-container">
+      <span>{{scriptFileName}}</span>
       <input-file (onFileSelect)="onFileSelect($event)" [label]="'Select...'">
-        <span class="nofiles"></span>
-        <span class="selected">{{scriptFileName}}</span>
       </input-file>
     </div>
   </div>

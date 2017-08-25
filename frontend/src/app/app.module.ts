@@ -13,7 +13,8 @@ import {RouterModule, Routes} from "@angular/router";
 import {MRQDashboardComponent} from './mrq-dashboard/mrq-dashboard.component';
 import {AddTaskComponent} from './add-task/add-task.component';
 import {AddJobComponent} from './add-job/add-job.component';
-import { InputFileComponent } from './input-file/input-file.component';
+import { MultiFileSelectorComponent } from './multi-file-selector/multi-file-selector.component';
+import {InputFileComponent} from "./input-file/input-file.component";
 
 const appRoutes: Routes = [
   {path: '', redirectTo: '/mrq-dashboard', pathMatch: 'full'},
@@ -29,6 +30,7 @@ const appRoutes: Routes = [
     MRQDashboardComponent,
     AddTaskComponent,
     AddJobComponent,
+    MultiFileSelectorComponent,
     InputFileComponent
   ],
   imports: [
