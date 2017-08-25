@@ -23,7 +23,7 @@ FIELD_PARAMS = "params"
 
 @app.route("/tasks", methods=["GET"])
 def get_tasks():
-    return jsonify([task.document for task in Task.find_all()])
+    return jsonify(items=[task.document for task in Task.find_all()])
 
 
 @app.route("/tasks", methods=["POST"])

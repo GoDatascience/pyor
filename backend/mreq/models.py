@@ -30,7 +30,7 @@ class Task(object):
             self.name = name
             self.script_name = script_name
             self.param_definitions = param_definitions
-            self.last_modified = datetime.datetime.utcnow()
+            self.last_modified: Union[datetime, None] = None
 
     @property
     def working_dir(self):
@@ -62,6 +62,13 @@ class Task(object):
         self.param_definitions = document["param_definitions"]
         self.last_modified = document["last_modified"]
 
+    @property
+    def raw_document(self):
+        document = self.document
+        document["_id"] = str(self.id)
+        document["last_modified"] = self.last_modified.isoformat()
+        return document
+
     def this_exists(self):
         return Task.exists(self.name)
 
@@ -71,6 +78,7 @@ class Task(object):
 
     @classmethod
     def insert(cls, task) -> bool:
+        task.last_modified = datetime.datetime.utcnow()
         result: InsertOneResult = collection.insert_one(task.document)
         if result.inserted_id is None:
             return False

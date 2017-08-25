@@ -1,3 +1,4 @@
+import json
 import os
 import unittest
 from typing import IO, List
@@ -80,7 +81,7 @@ class TasksApiTests(BaseTests):
 
     def test_get_tasks(self):
         # given
-        draft = create_task("draft", 'samples/draft.r')
+        draft = create_task("draft", 'samples/draft.r', [])
         randombox = create_task("randombox", 'samples/slow_fib.py')
 
         # when
@@ -88,12 +89,23 @@ class TasksApiTests(BaseTests):
 
         # then
         self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(response.data, list)
-        self.assertEqual(len(response.data), 2)
-        self.assertIn(draft.document, response.data)
-        self.assertIn(randombox.document, response.data)
+        data = json.loads(response.data)
+        self.assertIsInstance(data, dict)
+        items = data["items"]
+        self.assertIsInstance(items, list)
+        self.assertEqual(len(items), 2)
+        excluded_keys = ["last_modified"]
+        items_without_excluded_keys = [without_keys(item, excluded_keys) for item in items]
+        self.assertIn(without_keys(draft.raw_document, excluded_keys), items_without_excluded_keys)
+        self.assertIn(without_keys(randombox.raw_document, excluded_keys), items_without_excluded_keys)
+
+    def test_successful_create_task(self):
+        pass
 
 
+
+def without_keys(document, keys):
+    return {x: document[x] for x in document if x not in keys}
 
 def create_task(name: str, script_file_path: str, param_definitions=None):
     if param_definitions is None:
