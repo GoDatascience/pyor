@@ -12,7 +12,7 @@ from mreq.models import Task
 def create_task(name: str, param_definitions: List[Dict], script_file: FileStorage,
                 auxiliar_files: List[FileStorage]) -> Union[Task, None]:
     task = Task(name=name, script_name=os.path.basename(script_file.filename), param_definitions=param_definitions)
-    if task.exists():
+    if task.this_exists():
         raise TaskNameAlreadyExists()
     pathlib.Path(task.working_dir).mkdir(parents=True, exist_ok=True)
     if Task.insert(task):

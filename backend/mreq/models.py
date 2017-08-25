@@ -3,6 +3,9 @@ import os
 import pathlib
 from typing import Union, List, Dict
 
+import datetime
+
+import pymongo
 from bson.objectid import ObjectId
 from mrq import context
 from pymongo.collection import Collection
@@ -27,6 +30,7 @@ class Task(object):
             self.name = name
             self.script_name = script_name
             self.param_definitions = param_definitions
+            self.last_modified = datetime.datetime.utcnow()
 
     @property
     def working_dir(self):
@@ -44,7 +48,8 @@ class Task(object):
 
     @property
     def document(self):
-        document = {"name": self.name, "script_name": self.script_name, "param_definitions": self.param_definitions}
+        document = {"name": self.name, "script_name": self.script_name, "param_definitions": self.param_definitions,
+                    "last_modified": self.last_modified}
         if not self.id is None:
             document["_id"] = self.id
         return document
@@ -55,9 +60,9 @@ class Task(object):
         self.name = document["name"]
         self.script_name = document["script_name"]
         self.param_definitions = document["param_definitions"]
+        self.last_modified = document["last_modified"]
 
-    def exists(self):
-        """ Returns True if a job with the current _id exists in MongoDB. """
+    def this_exists(self):
         return Task.exists(self.name)
 
     @classmethod
@@ -81,7 +86,7 @@ class Task(object):
 
     @classmethod
     def find_all(cls) -> List:
-        cursor: Cursor = collection.find()
+        cursor: Cursor = collection.find(sort=[("last_modified", pymongo.DESCENDING)])
         tasks = []
         for document in cursor:
             tasks.append(Task(document=document))
