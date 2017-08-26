@@ -18,7 +18,7 @@ collection: Collection = context.connections.mongodb_jobs.mreq_tasks
 
 class Task(object):
     def __init__(self, name: Union[str, None] = None, script_name: Union[str, None] = None,
-                 param_definitions: List[Dict] = [], id: Union[str, None] = None, document: Dict = None) -> None:
+                 param_definitions=None, id: Union[str, None] = None, document: Dict = None) -> None:
         if document:
             self.document = document
         else:
@@ -29,7 +29,7 @@ class Task(object):
 
             self.name = name
             self.script_name = script_name
-            self.param_definitions = param_definitions
+            self.param_definitions = param_definitions or []
             self.last_modified: Union[datetime, None] = None
 
     @property
@@ -87,7 +87,7 @@ class Task(object):
 
     @classmethod
     def find_one(cls, id):
-        document = collection.find_one(id)
+        document = collection.find_one(ObjectId(id))
         if document is None:
             return None
         return Task(document=document)

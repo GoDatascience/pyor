@@ -2,6 +2,7 @@ import json
 from typing import List, Dict
 
 import flask
+from flask.wrappers import Response
 from mrq.dashboard.utils import jsonify
 from werkzeug.datastructures import FileStorage
 
@@ -52,7 +53,7 @@ def create_task():
         errors.append({"field": FIELD_PARAM_DEFINITIONS, "message": "The %s must be a list!" % FIELD_PARAM_DEFINITIONS})
 
     if errors:
-        return jsonify(errors), 400
+        return jsonify(errors=errors), 400
 
     script_file: FileStorage = flask.request.files[FIELD_SCRIPT_FILE]
     auxiliar_files: List[FileStorage] = flask.request.files.getlist(FIELD_AUXILIAR_FILES)
@@ -82,6 +83,7 @@ def execute_task(task_id: str):
         return jsonify(errors), 400
 
     mreq.services.enqueue_job(task, params, queue)
+    return Response(status=200)
 
 
 def verify_extension_in_list(filename: str, list: List):

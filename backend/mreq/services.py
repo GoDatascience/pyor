@@ -2,11 +2,15 @@ import pathlib
 from typing import List, Dict, Union
 
 import os
-from mrq import job
+import mrq.job
 from werkzeug.datastructures import FileStorage
 
 from mreq.exceptions import TaskNameAlreadyExists
 from mreq.models import Task
+
+R_TASK = "mreq.tasks.r.RTask"
+
+PYTHON_TASK = "mreq.tasks.python.PythonTask"
 
 
 def create_task(name: str, param_definitions: List[Dict], script_file: FileStorage,
@@ -18,7 +22,7 @@ def create_task(name: str, param_definitions: List[Dict], script_file: FileStora
     if Task.insert(task):
         script_file.save(task.script_path)
         for auxiliar_file in auxiliar_files:
-            auxiliar_file.save(task.working_dir)
+            auxiliar_file.save(os.path.join(task.working_dir, auxiliar_file.filename))
         return task
     else:
         return None
@@ -26,5 +30,5 @@ def create_task(name: str, param_definitions: List[Dict], script_file: FileStora
 
 def enqueue_job(task: Task, params: Dict, queue: str):
     params = {**task.params, **params}
-    job.queue_job("mreq.tasks.python.PythonTask" if ".py" in task.script_name else "mreq.tasks.r.RTask",
-                  params, queue=queue)
+    mrq.job.queue_job(PYTHON_TASK if ".py" in task.script_name else R_TASK,
+                      params, queue=queue)
