@@ -1,10 +1,15 @@
 version: '2'
 services:
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      args:
+        - BASE_IMAGE=${BASE_IMAGE}
+    environment:
+      - ENV=${ENV}
     ports:
-      - 5000:5000
-      - 5555:5555
+      - "${BACKEND_PORT}:5000"
+      - "${DASHBOARD_PORT}:5555"
     depends_on:
       - mongodb
       - redis
@@ -14,6 +19,22 @@ services:
     links:
       - mongodb
       - redis
+  frontend:
+    image: node:8
+    environment:
+      - NODE_ENV=${ENV}
+      - BACKEND_URL=${BACKEND_URL}
+      - DASHBOARD_URL=${DASHBOARD_URL}
+    working_dir: /usr/src/app
+    command: npm start
+    ports:
+      - "${FRONTEND_PORT}:4200"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/usr/src/app
+    links:
+      - backend
   mongodb:
     image: mongo:latest
     volumes:

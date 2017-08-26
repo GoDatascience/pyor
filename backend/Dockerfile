@@ -1,4 +1,5 @@
-FROM nvidia/cuda:8.0-cudnn7-devel
+ARG BASE_IMAGE
+FROM $BASE_IMAGE
 
 MAINTAINER fernandocamargoti <fernando.camargo.ti@gmail.com>
 

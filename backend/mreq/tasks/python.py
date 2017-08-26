@@ -12,4 +12,4 @@ def run_python_script(script_path, params):
 class PythonTask(BaseTask):
 
     def run(self, params):
-        return run_python_script(self.script_path, params)
+        run_python_script(self.script_path, params)

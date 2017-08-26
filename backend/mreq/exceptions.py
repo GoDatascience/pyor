@@ -1,0 +1,2 @@
+class TaskNameAlreadyExists(Exception):
+    pass
