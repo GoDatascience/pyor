@@ -64,9 +64,15 @@ class Task(object):
 
     @property
     def raw_document(self):
-        document = self.document
-        document["_id"] = str(self.id)
-        document["last_modified"] = self.last_modified.isoformat()
+        document = {}
+        for key, value in self.document.items():
+            if isinstance(value, (datetime.datetime, datetime.date)):
+                value = value.isoformat()
+            elif isinstance(value, ObjectId):
+                value = str(value)
+            elif isinstance(value, bytes):
+                value = value.decode('utf-8')
+            document[key] = value
         return document
 
     def this_exists(self):
