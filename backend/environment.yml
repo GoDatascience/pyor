@@ -215,6 +215,7 @@ dependencies:
 - zeromq=4.1.5=0
 - zlib=1.2.8=3
 - pip:
+  - certifi==2017.7.27.1
   - flask-script==2.0.5
   - future==0.16.0
   - gevent==1.2.2
@@ -230,6 +231,7 @@ dependencies:
   - protobuf==3.4.0
   - psutil==1.2.1
   - pymongo==3.5.0
+  - python-telegram-bot==7.0.1
   - redis==2.10.5
   - tensorflow==1.3.0
   - tensorflow-tensorboard==0.1.4

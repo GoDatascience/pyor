@@ -32,7 +32,7 @@ def get_tasks():
 @app.route("/tasks", methods=["POST"])
 @extract_json_from_form("data")
 @required_fields(FIELD_NAME)
-@custom_validation(FIELD_NAME, lambda name: not Task.exists(name), "There's already a task with this name!")
+@custom_validation(FIELD_NAME, lambda name: not Task.exists_name(name), "There's already a task with this name!")
 @validate_instance(FIELD_PARAM_DEFINITIONS, list)
 @required_files(FIELD_SCRIPT_FILE)
 @allowed_files(ALLOWED_SCRIPTS_EXTENSIONS, FIELD_SCRIPT_FILE)
