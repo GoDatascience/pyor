@@ -25,6 +25,10 @@
   font-weight: bold;
 }
 
+h3 {
+  color: #575757;
+}
+
 .add-task-btn-save {
   float: right;
   margin-bottom: 10px;

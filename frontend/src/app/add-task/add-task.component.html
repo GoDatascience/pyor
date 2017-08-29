@@ -13,8 +13,9 @@
   <div>
     <label>Script File</label>
     <div class="script-file-container">
-      <span>{{scriptFileName}}</span>
-      <input-file (onFileSelect)="onFileSelect($event)">
+      <h3 *ngIf="scriptFile" style="display: inline-block">{{scriptFile.name}}&nbsp;&nbsp;{{scriptFile.size}}&nbsp;bytes&nbsp;&nbsp;</h3>
+
+      <input-file (onFileSelect)="onFileSelect($event)" [accept]="'.R, .py'">
       </input-file>
     </div>
   </div>

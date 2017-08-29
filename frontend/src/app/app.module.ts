@@ -1,11 +1,15 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {MdButtonModule,
+import {FormsModule, ReactiveFormsModule} from '@angular/forms'
+import {
+  MdButtonModule,
   MdToolbarModule,
   MdInputModule,
   MdSelectModule,
   MdTooltipModule,
-  MdIconModule} from '@angular/material';
+  MdIconModule,
+  MdAutocompleteModule
+} from '@angular/material';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 import {AppComponent} from './app.component';
@@ -13,8 +17,9 @@ import {RouterModule, Routes} from "@angular/router";
 import {MRQDashboardComponent} from './mrq-dashboard/mrq-dashboard.component';
 import {AddTaskComponent} from './add-task/add-task.component';
 import {AddJobComponent} from './add-job/add-job.component';
-import { MultiFileSelectorComponent } from './multi-file-selector/multi-file-selector.component';
+import {MultiFileSelectorComponent} from './multi-file-selector/multi-file-selector.component';
 import {InputFileComponent} from "./input-file/input-file.component";
+import {HttpClientModule} from '@angular/common/http';
 
 const appRoutes: Routes = [
   {path: '', redirectTo: '/mrq-dashboard', pathMatch: 'full'},
@@ -42,6 +47,10 @@ const appRoutes: Routes = [
     MdSelectModule,
     MdIconModule,
     MdTooltipModule,
+    MdAutocompleteModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
     RouterModule.forRoot(appRoutes),
   ],
   exports: [
@@ -51,7 +60,10 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     MdSelectModule,
     MdTooltipModule,
-    MdIconModule
+    MdIconModule,
+    MdAutocompleteModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

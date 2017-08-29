@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-add-task',
@@ -7,17 +8,32 @@ import {Component, OnInit} from '@angular/core';
 })
 export class AddTaskComponent implements OnInit {
   parameters: Parameter[] = [];
-  scriptFileName: string;
+  scriptFile: File;
   types: string[] = ["text", "number", "date", "boolean"];
 
-  constructor() {
+  constructor(private http: HttpClient) {
   }
 
   ngOnInit() {
   }
 
   addTask(): void {
+    let headers = {
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Origin': '*',
+      "enctype": "multipart/form-data"
+    };
 
+    this.http.post("http://localhost:5000/tasks",
+      {
+        headers: headers,
+        data: {
+          name: "Task teste"
+        }
+      }).subscribe(data => {
+      console.log("Post realizado");
+      console.log(data);
+    });
   }
 
   addParam(): void {
@@ -33,7 +49,7 @@ export class AddTaskComponent implements OnInit {
   }
 
   onFileSelect(fileList) {
-    this.scriptFileName = fileList[0].name;
+    this.scriptFile = fileList[0];
   }
 
 }
