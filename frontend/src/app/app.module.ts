@@ -8,7 +8,9 @@ import {
   MdSelectModule,
   MdTooltipModule,
   MdIconModule,
-  MdAutocompleteModule
+  MdAutocompleteModule,
+  MdCheckboxModule,
+  MdDatepickerModule, MdNativeDateModule
 } from '@angular/material';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
@@ -51,6 +53,9 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MdCheckboxModule,
+    MdDatepickerModule,
+    MdNativeDateModule,
     RouterModule.forRoot(appRoutes),
   ],
   exports: [
@@ -63,7 +68,10 @@ const appRoutes: Routes = [
     MdIconModule,
     MdAutocompleteModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MdCheckboxModule,
+    MdDatepickerModule,
+    MdNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

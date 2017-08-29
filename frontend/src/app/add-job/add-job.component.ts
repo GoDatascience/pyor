@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl} from "@angular/forms";
 
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
-import {ParamDefinition, Task} from "../add-task/task";
+import {Param, Task} from "../add-task/task";
+import {MdDatepicker} from "@angular/material";
 
 
 @Component({
@@ -17,6 +18,8 @@ export class AddJobComponent implements OnInit {
   tasks: Task[] = [];
   selectedTaskName: string;
 
+  @ViewChild(MdDatepicker) picker: MdDatepicker<Date>;
+
   constructor() {
     this.taskCtrl = new FormControl();
     this.filtredTasks = this.taskCtrl.valueChanges
@@ -28,58 +31,38 @@ export class AddJobComponent implements OnInit {
   mockTasks() {
     let task: Task = new Task();
     task.name = "Train BitCoin";
-    let param_definition_task = new ParamDefinition();
-    param_definition_task.name = "Extension";
-    param_definition_task.type = "text";
-    let param_definition_2_task = new ParamDefinition();
-    param_definition_2_task.name = "Size";
-    param_definition_2_task.type = "number";
-    task.param_definitions.push(param_definition_task);
-    task.param_definitions.push(param_definition_2_task);
+    let param_definition_task = new Param("Extension", "text");
+    let param_definition_2_task = new Param("Size", "number");
+    task.params.push(param_definition_task);
+    task.params.push(param_definition_2_task);
     this.tasks.push(task);
 
     let task2: Task = new Task();
     task2.name = "Train IBOVESPA";
-    let param_definition_task2 = new ParamDefinition();
-    param_definition_task2.name = "Extension";
-    param_definition_task2.type = "text";
-    let param_definition2_task2 = new ParamDefinition();
-    param_definition2_task2.name = "Size";
-    param_definition2_task2.type = "number";
-    task2.param_definitions.push(param_definition_task2);
-    task2.param_definitions.push(param_definition2_task2);
+    let param_definition_task2 = new Param("Extension", "text");
+    let param_definition2_task2 = new Param("Size", "number");
+    task2.params.push(param_definition_task2);
+    task2.params.push(param_definition2_task2);
     this.tasks.push(task2);
 
     let task3: Task = new Task();
     task3.name = "Predict IBOVESPA";
-    let param_definition_task3 = new ParamDefinition();
-    param_definition_task3.name = "Date";
-    param_definition_task3.type = "date";
-    let param_definition2_task3 = new ParamDefinition();
-    param_definition2_task3.name = "Rate";
-    param_definition2_task3.type = "number";
-    let param_definition3_task3 = new ParamDefinition();
-    param_definition3_task3.name = "Use Cluster";
-    param_definition3_task3.type = "boolean";
-    task3.param_definitions.push(param_definition_task3);
-    task3.param_definitions.push(param_definition2_task3);
-    task3.param_definitions.push(param_definition3_task3);
+    let param_definition_task3 = new Param("Date", "date");
+    let param_definition2_task3 = new Param("Rate", "number");
+    let param_definition3_task3 = new Param("Use Cluster", "boolean");
+    task3.params.push(param_definition_task3);
+    task3.params.push(param_definition2_task3);
+    task3.params.push(param_definition3_task3);
     this.tasks.push(task3);
 
     let task4: Task = new Task();
     task4.name = "Predict BitCoin";
-    let param_definition_task4 = new ParamDefinition();
-    param_definition_task4.name = "Date";
-    param_definition_task4.type = "date";
-    let param_definition2_task4 = new ParamDefinition();
-    param_definition2_task4.name = "Rate";
-    param_definition2_task4.type = "number";
-    let param_definition3_task4 = new ParamDefinition();
-    param_definition3_task4.name = "Use Cluster";
-    param_definition3_task4.type = "boolean";
-    task4.param_definitions.push(param_definition_task4);
-    task4.param_definitions.push(param_definition2_task4);
-    task4.param_definitions.push(param_definition3_task4);
+    let param_definition_task4 = new Param("Date", "date");
+    let param_definition2_task4 = new Param("Rate", "number");
+    let param_definition3_task4 = new Param("Use Cluster", "boolean");
+    task4.params.push(param_definition_task4);
+    task4.params.push(param_definition2_task4);
+    task4.params.push(param_definition3_task4);
     this.tasks.push(task4);
   }
 

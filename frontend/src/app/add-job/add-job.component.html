@@ -3,11 +3,13 @@
   <div>
     <div class="general-data-container">
       <md-input-container>
-        <input mdInput placeholder="Select a Task"  [(ngModel)]="selectedTaskName" [mdAutocomplete]="auto" [formControl]="taskCtrl">
+        <input mdInput placeholder="Select a Task" [(ngModel)]="selectedTaskName" [mdAutocomplete]="auto"
+               [formControl]="taskCtrl">
       </md-input-container>
 
       <md-autocomplete #auto="mdAutocomplete">
-        <md-option *ngFor="let task of filtredTasks | async" [value]="task.name" (onSelectionChange)="loadParams(task.name)">
+        <md-option *ngFor="let task of filtredTasks | async" [value]="task.name"
+                   (onSelectionChange)="loadParams(task.name)">
           {{ task.name }}
         </md-option>
       </md-autocomplete>
@@ -23,14 +25,29 @@
           </thead>
 
           <tbody>
-          <tr *ngFor="let param_definition of getSelectedTask().param_definitions; let i =index">
+          <tr *ngFor="let param of getSelectedTask().params; let i =index">
             <td>{{i + 1}}</td>
-            <td>{{param_definition.name}}</td>
-            <td>{{param_definition.type}}</td>
+            <td>{{param.name}}</td>
+            <td>{{param.type}}</td>
             <td class="param-value">
-              <md-input-container>
-                <input mdInput placeholder="Parameter Value">
+              <md-input-container *ngIf="param.type == 'number'">
+                <input mdInput type="number" placeholder="Insert a number" [(ngModel)]="param.value">
               </md-input-container>
+
+              <md-input-container *ngIf="param.type == 'text'">
+                <input mdInput type="text" placeholder="Type a text" [(ngModel)]="param.value">
+              </md-input-container>
+
+              <md-checkbox *ngIf="param.type == 'boolean'"
+                           style="float: left" [(ngModel)]="param.value">
+              </md-checkbox>
+
+              <md-input-container *ngIf="param.type == 'date'">
+                <input mdInput [mdDatepicker]="picker" placeholder="Choose a date" [(value)]="param.value">
+                <button mdSuffix [mdDatepickerToggle]="picker"></button>
+              </md-input-container>
+              <md-datepicker #picker *ngIf="param.type == 'date'"
+                             (selectedChanged)="param.value = $event"></md-datepicker>
             </td>
 
           </tr>

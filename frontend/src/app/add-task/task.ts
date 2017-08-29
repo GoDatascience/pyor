@@ -2,10 +2,10 @@ export class Task {
   name: string;
   script_file: File;
   auxiliar_files: File[] = [];
-  param_definitions: ParamDefinition[] = [];
+  params: Param[] = [];
 }
 
-export class ParamDefinition {
-  name: string;
-  type: string;
+export class Param {
+  value: any;
+  constructor(public name: string, public type: string) {}
 }

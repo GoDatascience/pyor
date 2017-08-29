@@ -43,10 +43,6 @@ table {
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25);
 }
 
-.param-value {
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25)
-}
-
 md-input-container {
   width: 100%;
 }
