@@ -12,6 +12,33 @@
         </md-option>
       </md-autocomplete>
 
+      <div *ngIf="getSelectedTask()">
+        <label>Parameters</label>
+        <table>
+          <thead>
+          <th></th>
+          <th>Name</th>
+          <th>Type</th>
+          <th></th>
+          </thead>
+
+          <tbody>
+          <tr *ngFor="let param_definition of getSelectedTask().param_definitions; let i =index">
+            <td>{{i + 1}}</td>
+            <td>{{param_definition.name}}</td>
+            <td>{{param_definition.type}}</td>
+            <td class="param-value">
+              <md-input-container>
+                <input mdInput placeholder="Parameter Value">
+              </md-input-container>
+            </td>
+
+          </tr>
+          </tbody>
+
+        </table>
+      </div>
+
     </div>
   </div>
 

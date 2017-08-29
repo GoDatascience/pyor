@@ -53,25 +53,33 @@ export class AddJobComponent implements OnInit {
     let task3: Task = new Task();
     task3.name = "Predict IBOVESPA";
     let param_definition_task3 = new ParamDefinition();
-    param_definition_task3.name = "Extension";
-    param_definition_task3.type = "text";
+    param_definition_task3.name = "Date";
+    param_definition_task3.type = "date";
     let param_definition2_task3 = new ParamDefinition();
-    param_definition2_task3.name = "Size";
+    param_definition2_task3.name = "Rate";
     param_definition2_task3.type = "number";
+    let param_definition3_task3 = new ParamDefinition();
+    param_definition3_task3.name = "Use Cluster";
+    param_definition3_task3.type = "boolean";
     task3.param_definitions.push(param_definition_task3);
     task3.param_definitions.push(param_definition2_task3);
+    task3.param_definitions.push(param_definition3_task3);
     this.tasks.push(task3);
 
     let task4: Task = new Task();
     task4.name = "Predict BitCoin";
     let param_definition_task4 = new ParamDefinition();
-    param_definition_task4.name = "Extension";
-    param_definition_task4.type = "text";
+    param_definition_task4.name = "Date";
+    param_definition_task4.type = "date";
     let param_definition2_task4 = new ParamDefinition();
-    param_definition2_task4.name = "Size";
+    param_definition2_task4.name = "Rate";
     param_definition2_task4.type = "number";
+    let param_definition3_task4 = new ParamDefinition();
+    param_definition3_task4.name = "Use Cluster";
+    param_definition3_task4.type = "boolean";
     task4.param_definitions.push(param_definition_task4);
     task4.param_definitions.push(param_definition2_task4);
+    task4.param_definitions.push(param_definition3_task4);
     this.tasks.push(task4);
   }
 

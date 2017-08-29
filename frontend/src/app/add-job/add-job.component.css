@@ -24,3 +24,29 @@
   color: #575757;
   font-weight: bold;
 }
+
+
+tr {
+  border-bottom: 1px solid #ddd;
+}
+
+th, td {
+  padding: 2px 5px 0 0;
+  text-align: center;
+}
+
+table {
+  padding: 20px;
+  margin-top: 20px;
+  width: 100%;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25);
+}
+
+.param-value {
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25)
+}
+
+md-input-container {
+  width: 100%;
+}
