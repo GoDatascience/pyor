@@ -20,13 +20,12 @@ services:
       - mongodb
       - redis
   frontend:
-    image: node:8
+    build:
+      context: ./frontend
     environment:
       - NODE_ENV=${ENV}
       - BACKEND_URL=${BACKEND_URL}
       - DASHBOARD_URL=${DASHBOARD_URL}
-    working_dir: /usr/src/app
-    command: npm start
     ports:
       - "${FRONTEND_PORT}:4200"
     depends_on:
