@@ -1,10 +1,12 @@
 from flask import Flask
 from flask_script import Manager
+from flask_cors import CORS
 from mrq import context
 
 # Flask
 app = Flask(__name__)
 app.config.from_object('config')
+CORS(app)
 
 manager = Manager(app)
 
