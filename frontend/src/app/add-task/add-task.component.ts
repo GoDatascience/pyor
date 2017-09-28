@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Component({
   selector: 'app-add-task',
@@ -9,6 +9,7 @@ import {HttpClient} from "@angular/common/http";
 export class AddTaskComponent implements OnInit {
   parameters: Parameter[] = [];
   scriptFile: File;
+  taskName: string;
   types: string[] = ["text", "number", "date", "boolean"];
 
   constructor(private http: HttpClient) {
@@ -18,19 +19,21 @@ export class AddTaskComponent implements OnInit {
   }
 
   addTask(): void {
-    let headers = {
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Origin': '*',
-      "enctype": "multipart/form-data"
+    const headers = new HttpHeaders();
+
+    //headers.set('Content-Type', 'application/x-www-form-urlencoded');
+    headers.set('enctype', 'multipart/form-data');
+
+    let body = new FormData();
+
+    const data = {
+      name: this.taskName
     };
 
-    this.http.post("http://localhost:5000/tasks",
-      {
-        headers: headers,
-        data: {
-          name: "Task teste"
-        }
-      }).subscribe(data => {
+    body.append('script_file', this.scriptFile);
+    body.append('data', JSON.stringify(data));
+
+    this.http.post("http://localhost:5000/tasks", body, {headers: headers}).subscribe(data => {
       console.log("Post realizado");
       console.log(data);
     });

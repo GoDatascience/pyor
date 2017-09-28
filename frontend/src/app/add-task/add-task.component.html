@@ -1,10 +1,9 @@
 <div class="add-task-container">
   <h3 class="add-task-container-title mat-title">Add new Task</h3>
   <div>
-    <label>Task Name</label>
     <div class="general-data-container">
       <md-input-container class="field">
-        <input mdInput placeholder="Name" value="My new Task">
+        <input mdInput placeholder="Task Name" [(ngModel)]="taskName">
       </md-input-container>
 
     </div>
