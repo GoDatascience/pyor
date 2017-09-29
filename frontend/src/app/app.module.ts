@@ -22,6 +22,7 @@ import {AddJobComponent} from './add-job/add-job.component';
 import {MultiFileSelectorComponent} from './multi-file-selector/multi-file-selector.component';
 import {InputFileComponent} from "./input-file/input-file.component";
 import {HttpClientModule} from '@angular/common/http';
+import {HttpModule} from "@angular/http";
 
 const appRoutes: Routes = [
   {path: '', redirectTo: '/mrq-dashboard', pathMatch: 'full'},
@@ -53,6 +54,7 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    HttpModule,
     MdCheckboxModule,
     MdDatepickerModule,
     MdNativeDateModule,
