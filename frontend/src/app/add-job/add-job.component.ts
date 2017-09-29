@@ -71,6 +71,11 @@ export class AddJobComponent implements OnInit {
 
   startJob() {
     console.log(this.getSelectedTask());
-    console.log("Run....");
+    console.log("Run....", this.getSelectedTask()._id);
+    this.http.put("http://localhost:5000/tasks/" + this.getSelectedTask()._id, {
+      queue: "sequential"
+    }).toPromise()
+      .then(response => console.log(response.json()))
+      .catch(AddJobComponent.handleError);
   }
 }

@@ -1,4 +1,5 @@
 export class Task {
+  _id: string;
   name: string;
   script_file: File;
   auxiliar_files: File[] = [];
