@@ -14,7 +14,7 @@
         </md-option>
       </md-autocomplete>
 
-      <div *ngIf="getSelectedTask()">
+      <div *ngIf="selectedTaskHasParameters()">
         <label>Parameters</label>
         <table>
           <thead>
@@ -25,7 +25,7 @@
           </thead>
 
           <tbody>
-          <tr *ngFor="let param of getSelectedTask().params; let i =index">
+          <tr *ngFor="let param of getSelectedTask().param_definitions; let i =index">
             <td>{{i + 1}}</td>
             <td>{{param.name}}</td>
             <td>{{param.type}}</td>

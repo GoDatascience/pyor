@@ -5,8 +5,10 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import {Task} from "../add-task/task";
-import {MdDatepicker} from "@angular/material";
+import {MdDatepicker, MdDialogRef} from "@angular/material";
 import {Http} from "@angular/http";
+import {InfoDialogComponent} from "../info-dialog/info-dialog.component";
+import {InfoDialogService} from "../info-dialog/info-dialog.service";
 
 
 @Component({
@@ -22,7 +24,7 @@ export class AddJobComponent implements OnInit {
 
   @ViewChild(MdDatepicker) picker: MdDatepicker<Date>;
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private infoDialogService: InfoDialogService) {
     this.taskCtrl = new FormControl();
   }
 
@@ -51,7 +53,6 @@ export class AddJobComponent implements OnInit {
   }
 
   filterTasks(taskName: string) {
-    console.log("FilterTasks", this.tasks);
     return taskName ? this.tasks.filter(task =>
       task.name.toLowerCase().indexOf(taskName.toLowerCase()) > 0 ||
       task.name.toLowerCase().indexOf(taskName.toLowerCase()) === 0) : this.tasks;
@@ -65,6 +66,17 @@ export class AddJobComponent implements OnInit {
     return this.getTask(this.selectedTaskName);
   }
 
+  selectedTaskHasParameters(): boolean {
+    const task = this.getSelectedTask();
+    return task != null && task.param_definitions.length > 0;
+  }
+
+
+  showDialogJobStarted(): MdDialogRef<InfoDialogComponent> {
+    const msg = "Job started!";
+    return this.infoDialogService.showDialog(msg);
+  }
+
   getTask(taskName: string) {
     return this.tasks.filter(task => task.name === taskName)[0];
   }
@@ -75,7 +87,11 @@ export class AddJobComponent implements OnInit {
     this.http.put("http://localhost:5000/tasks/" + this.getSelectedTask()._id, {
       queue: "sequential"
     }).toPromise()
-      .then(response => console.log(response.json()))
+      .then(response=> {
+        if (response.status == 200) {
+          this.showDialogJobStarted();
+        }
+      })
       .catch(AddJobComponent.handleError);
   }
 }

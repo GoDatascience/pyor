@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {MdDialogRef} from "@angular/material";
+import {InfoDialogComponent} from "../info-dialog/info-dialog.component";
+import {InfoDialogService} from "../info-dialog/info-dialog.service";
 
 @Component({
   selector: 'app-add-task',
@@ -12,7 +15,7 @@ export class AddTaskComponent implements OnInit {
   taskName: string;
   types: string[] = ["text", "number", "date", "boolean"];
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private infoDialogService: InfoDialogService) {
   }
 
   ngOnInit() {
@@ -36,7 +39,13 @@ export class AddTaskComponent implements OnInit {
     this.http.post("http://localhost:5000/tasks", body, {headers: headers}).subscribe(data => {
       console.log("Post realizado");
       console.log(data);
+      this.getModalAddTaskOK();
     });
+  }
+
+  getModalAddTaskOK(): MdDialogRef<InfoDialogComponent> {
+    const msg = "Tarefa adicionada com sucesso!";
+    return this.infoDialogService.showDialog(msg);
   }
 
   addParam(): void {

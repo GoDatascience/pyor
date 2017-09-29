@@ -1,17 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms'
-import {
-  MdButtonModule,
-  MdToolbarModule,
-  MdInputModule,
-  MdSelectModule,
-  MdTooltipModule,
-  MdIconModule,
-  MdAutocompleteModule,
-  MdCheckboxModule,
-  MdDatepickerModule, MdNativeDateModule
-} from '@angular/material';
+import {MdAutocompleteModule, MdButtonModule, MdCheckboxModule, MdDatepickerModule, MdIconModule, MdInputModule, MdNativeDateModule, MdSelectModule, MdToolbarModule, MdTooltipModule} from '@angular/material';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 import {AppComponent} from './app.component';
@@ -23,6 +13,8 @@ import {MultiFileSelectorComponent} from './multi-file-selector/multi-file-selec
 import {InputFileComponent} from "./input-file/input-file.component";
 import {HttpClientModule} from '@angular/common/http';
 import {HttpModule} from "@angular/http";
+import {InfoDialogComponent} from './info-dialog/info-dialog.component';
+import {InfoDialogService} from "./info-dialog/info-dialog.service";
 
 const appRoutes: Routes = [
   {path: '', redirectTo: '/mrq-dashboard', pathMatch: 'full'},
@@ -39,8 +31,10 @@ const appRoutes: Routes = [
     AddTaskComponent,
     AddJobComponent,
     MultiFileSelectorComponent,
-    InputFileComponent
+    InputFileComponent,
+    InfoDialogComponent
   ],
+  entryComponents: [InfoDialogComponent],
   imports: [
     BrowserModule,
     MdToolbarModule,
@@ -73,9 +67,9 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     MdCheckboxModule,
     MdDatepickerModule,
-    MdNativeDateModule,
+    MdNativeDateModule
   ],
-  providers: [],
+  providers: [InfoDialogService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
