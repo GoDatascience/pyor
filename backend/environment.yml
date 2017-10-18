@@ -1,4 +1,4 @@
-name: mreq
+name: pyor
 channels:
 - defaults
 dependencies:

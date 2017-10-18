@@ -16,14 +16,14 @@ ENV PATH=/opt/conda/bin:$PATH
 
 # Use the environment.yml to create the conda environment.
 ADD environment.yml /tmp/environment.yml
-RUN conda env create -f /tmp/environment.yml -n mreq
+RUN conda env create -f /tmp/environment.yml -n pyor
 
-ENV MREQ_BACKEND=/opt/mreq/backend \
-    MREQ_DATA=/var/mreq \
-    MREQ_ENV=/opt/conda/envs/mreq \
+ENV PYOR_BACKEND=/opt/pyor/backend \
+    PYOR_DATA=/var/pyor \
+    PYOR_ENV=/opt/conda/envs/pyor \
     SUPERVISOR_ENABLED=True
 
-ENV PATH=$MREQ_ENV/bin:$PATH
+ENV PATH=$PYOR_ENV/bin:$PATH
 
 ADD supervisord.conf /tmp/supervisord/supervisord.conf
 ADD append_workers_to_supervisord.py /tmp/supervisord/append_workers_to_supervisord.py
@@ -35,7 +35,7 @@ RUN python append_workers_to_supervisord.py > /etc/supervisor/conf.d/supervisord
 WORKDIR /root
 RUN rm -r /tmp/supervisord
 
-VOLUME ["$MREQ_BACKEND", "$MREQ_DATA"]
+VOLUME ["$PYOR_BACKEND", "$PYOR_DATA"]
 
 # Flask and Dashboard
 EXPOSE 5000 5555

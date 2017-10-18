@@ -20,4 +20,4 @@ def runserver():
     # Flask
     app.run(host='0.0.0.0')
 
-from mreq.controllers import tasks
+from pyor.controllers import tasks

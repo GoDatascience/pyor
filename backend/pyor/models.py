@@ -14,7 +14,7 @@ from pymongo.results import InsertOneResult
 
 # MRQ
 context.setup_context(file_path="workers/mrqconfig.py")
-collection: Collection = context.connections.mongodb_jobs.mreq_tasks
+collection: Collection = context.connections.mongodb_jobs.pyor_tasks
 
 class Task(object):
     def __init__(self, name: Union[str, None] = None, script_name: Union[str, None] = None,
@@ -34,7 +34,7 @@ class Task(object):
 
     @property
     def working_dir(self):
-        return os.path.join(os.environ["MREQ_DATA"], "tasks", self.name)
+        return os.path.join(os.environ["PYOR_DATA"], "tasks", self.name)
 
     @property
     def script_path(self):

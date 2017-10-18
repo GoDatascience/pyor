@@ -14,16 +14,16 @@ from pymongo.collection import Collection
 from pymongo.database import Database
 from werkzeug.datastructures import FileStorage
 
-import mreq
-from mreq import app
-from mreq.controllers.tasks import FIELD_NAME, FIELD_PARAM_DEFINITIONS, FIELD_SCRIPT_FILE, FIELD_AUXILIAR_FILES, \
+import pyor
+from pyor import app
+from pyor.controllers.tasks import FIELD_NAME, FIELD_PARAM_DEFINITIONS, FIELD_SCRIPT_FILE, FIELD_AUXILIAR_FILES, \
     FIELD_PARAMS, FIELD_QUEUE
-from mreq.models import Task
-import mreq.services
+from pyor.models import Task
+import pyor.services
 
 import shutil
 
-from mreq.services import R_TASK
+from pyor.services import R_TASK
 
 EXCLUDED_KEYS = ["last_modified"]
 
@@ -34,11 +34,11 @@ database: Database = context.connections.mongodb_jobs
 class BaseTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        os.environ["MREQ_DATA"] = os.path.join(os.environ["MREQ_DATA"], "tests")
+        os.environ["PYOR_DATA"] = os.path.join(os.environ["PYOR_DATA"], "tests")
 
     def setUp(self):
-        os.chdir(os.environ["MREQ_BACKEND"])
-        shutil.rmtree(os.path.join(os.environ["MREQ_DATA"], "tasks"), ignore_errors=True)
+        os.chdir(os.environ["PYOR_BACKEND"])
+        shutil.rmtree(os.path.join(os.environ["PYOR_DATA"], "tasks"), ignore_errors=True)
         for collection_name in database.collection_names(False):
             database[collection_name].drop()
 
@@ -50,7 +50,7 @@ class TasksExecutionTests(BaseTests):
         task = create_task("slowbix", 'samples/slow_fib.py')
 
         # when
-        mreq.services.enqueue_job(task, {"n": 20}, "sequential")
+        pyor.services.enqueue_job(task, {"n": 20}, "sequential")
         result = start_worker()
 
         # then
@@ -61,7 +61,7 @@ class TasksExecutionTests(BaseTests):
         task = create_task("randombox", 'samples/randombox.r')
 
         # when
-        mreq.services.enqueue_job(task, {"ret": 2, "rept": 1000}, "sequential")
+        pyor.services.enqueue_job(task, {"ret": 2, "rept": 1000}, "sequential")
         result = start_worker()
 
         # then
@@ -72,7 +72,7 @@ class TasksExecutionTests(BaseTests):
         task = create_task("draft", 'samples/draft.r')
 
         # when
-        mreq.services.enqueue_job(task, {}, "sequential")
+        pyor.services.enqueue_job(task, {}, "sequential")
         result = start_worker()
 
         # then
@@ -151,7 +151,7 @@ def create_task(name: str, script_file_path: str, param_definitions=None):
 
     with open(script_file_path, 'rb') as script_file:
         script_file = FileStorage(script_file)
-        task: Task = mreq.services.create_task(name, param_definitions, script_file, [])
+        task: Task = pyor.services.create_task(name, param_definitions, script_file, [])
     return task
 
 
