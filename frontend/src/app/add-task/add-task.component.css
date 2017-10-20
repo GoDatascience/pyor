@@ -3,7 +3,7 @@
   border-radius: 2px;
   margin: 30px auto;
   width: 40%;
-  padding: 10px;
+  padding: 30px;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }
@@ -23,6 +23,10 @@
 .add-task-container label {
   color: #575757;
   font-weight: bold;
+}
+
+h3 {
+  color: #575757;
 }
 
 .add-task-btn-save {

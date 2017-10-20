@@ -1,12 +1,9 @@
 <span>
-  <label>{{label}}</label>
-  &nbsp;
-    <input [accept]="accept" type="file" (change)="onNativeInputFileSelect($event)" #inputFile hidden />
-    <button type="button" md-raised-button (click)="selectFile()">
+
+    <input *ngIf="single" [accept]="accept" type="file" (change)="onNativeInputFileSelect($event)" #inputFile hidden />
+    <input *ngIf="!single" [accept]="accept" type="file" multiple (change)="onNativeInputFileSelect($event)" #inputFile hidden />
+
+    <button class="select-file" md-mini-fab (click)="selectFile()" mdTooltip="Click to select the script file!">
         <md-icon>attachment</md-icon>
-        <ng-content *ngIf="!fileCount" select=".nofiles"></ng-content>
-        <span *ngIf="fileCount">
-            <ng-content select=".selected"></ng-content>
-        </span>
     </button>
 </span>

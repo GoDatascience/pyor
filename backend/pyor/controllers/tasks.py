@@ -56,6 +56,8 @@ def create_task(data: Dict= None):
 def execute_task(task_id: str, data: Dict= None):
     queue: str = data.get(FIELD_QUEUE)
     params: Dict = data.get(FIELD_PARAMS)
+    if not params:
+        params = {}
 
     task: Task = Task.find_one(task_id)
     if not task:

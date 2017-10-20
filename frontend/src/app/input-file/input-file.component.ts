@@ -1,13 +1,13 @@
 import {Component, Output, EventEmitter, ViewChild, ElementRef, Input} from '@angular/core';
 
 @Component({
-  'moduleId': module.id,
-  'selector': 'input-file',
-  'templateUrl': './input-file.component.html'
+  selector: 'input-file',
+  templateUrl: './input-file.component.html',
+  styleUrls: ['./input-file.component.css']
 })
 export class InputFileComponent {
   @Input() accept: string;
-  @Input() label: string;
+  @Input() single: boolean = true;
   @Output() onFileSelect: EventEmitter<File[]> = new EventEmitter();
 
   @ViewChild('inputFile') nativeInputFile: ElementRef;

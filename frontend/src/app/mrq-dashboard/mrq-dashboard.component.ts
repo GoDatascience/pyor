@@ -20,7 +20,7 @@ export class MRQDashboardComponent implements OnInit {
   }
 
   adjust() {
-    this.el.height = window.innerHeight;
+    this.el.height = window.innerHeight - 100;
     this.el.width = "100%";
   }
 

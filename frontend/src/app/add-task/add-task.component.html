@@ -1,31 +1,27 @@
 <div class="add-task-container">
   <h3 class="add-task-container-title mat-title">Add new Task</h3>
   <div>
-    <label>Task Name</label>
     <div class="general-data-container">
       <md-input-container class="field">
-        <input mdInput placeholder="Name" value="My new Task">
+        <input mdInput placeholder="Task Name" [(ngModel)]="taskName">
       </md-input-container>
 
     </div>
   </div>
 
   <div>
-    <label>Script file</label>
+    <label>Script File</label>
     <div class="script-file-container">
-      <input-file (onFileSelect)="onFileSelect($event)" [label]="'Select...'">
-        <span class="nofiles"></span>
-        <span class="selected">{{scriptFileName}}</span>
+      <h3 *ngIf="scriptFile" style="display: inline-block">{{scriptFile.name}}&nbsp;&nbsp;{{scriptFile.size}}&nbsp;bytes&nbsp;&nbsp;</h3>
+
+      <input-file (onFileSelect)="onFileSelect($event)" [accept]="'.R, .py'">
       </input-file>
     </div>
   </div>
 
   <div>
     <label>Auxilar Files</label>
-    <span>TODO</span>
-    <div class="aux-files-container">
-
-    </div>
+    <app-multi-file-selector></app-multi-file-selector>
   </div>
 
   <div>

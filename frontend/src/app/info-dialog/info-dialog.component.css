@@ -1,0 +1,35 @@
+.kb-confirm-modal {
+  float: right;
+  margin-right: -15px;
+  margin-top: -20px;
+  cursor: pointer;
+}
+
+.kb-confirm-body {
+  min-width: 200px;
+  overflow-y: auto;
+  border-top: 1px solid #FFC107;
+  padding-bottom: 10px;
+}
+
+.kb-confirm-msg{
+  margin-top: 5px;
+  font-weight: bold;
+  color: #2d2d2d;
+}
+
+.kb-confirm-btn {
+  background-color: white;
+  float: right;
+  margin-right: 5px;
+}
+
+.kb-confirm-icon {
+  margin-right: 5px;
+  color: #FFC107;
+  font-size: 40px;
+}
+
+.kb-confirm-warning {
+  margin-left: 50px;
+}

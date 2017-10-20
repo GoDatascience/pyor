@@ -1,0 +1,31 @@
+<div class="container">
+  <table>
+    <thead>
+    <th></th>
+    <th>Name</th>
+    <th>Size</th>
+    <th>Type</th>
+    <th class="remove-cell"></th>
+    </thead>
+
+    <tbody>
+    <tr *ngFor="let file of _files; let i =index">
+      <td>{{i + 1}}</td>
+      <td>{{file.name}}</td>
+      <td>{{file.size}}</td>
+      <td>{{file.type}}</td>
+      <td class="remove-cell">
+        <button md-mini-fab class="remove-file" (click)="removeFile(file)"
+                mdTooltip="Click to remove this parameter!">
+          <md-icon>delete</md-icon>
+        </button>
+      </td>
+    </tr>
+    </tbody>
+
+  </table>
+
+  <input-file [single]="false" (onFileSelect)="onFileSelect($event)">
+  </input-file>
+
+</div>

@@ -1,0 +1,29 @@
+.remove-file {
+  background: #646464;
+}
+.container {
+  padding: 10px;
+}
+
+tr {
+  border-bottom: 1px solid #ddd;
+}
+
+.remove-cell {
+  border-bottom: none;
+}
+
+/*tr:nth-child(even) {*/
+  /*background-color: #c3c3c3*/
+/*}*/
+
+th, td {
+  padding: 2px 5px 0 0;
+}
+
+table {
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25);
+}
