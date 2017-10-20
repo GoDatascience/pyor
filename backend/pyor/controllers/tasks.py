@@ -6,11 +6,11 @@ from flask.wrappers import Response
 from mrq.dashboard.utils import jsonify
 from werkzeug.datastructures import FileStorage
 
-import mreq.services
-from mreq import app
-from mreq.controllers.validations import extract_json_from_form, required_fields, validate_instance, required_files, \
+import pyor.services
+from pyor import app
+from pyor.controllers.validations import extract_json_from_form, required_fields, validate_instance, required_files, \
     allowed_files, allowed_file_lists, filter_errors, custom_validation, extract_json
-from mreq.models import Task
+from pyor.models import Task
 
 
 ALLOWED_EXTENSIONS = app.config["ALLOWED_EXTENSIONS"]
@@ -44,7 +44,7 @@ def create_task(data: Dict= None):
     script_file: FileStorage = flask.request.files[FIELD_SCRIPT_FILE]
     auxiliar_files: List[FileStorage] = flask.request.files.getlist(FIELD_AUXILIAR_FILES)
 
-    task = mreq.services.create_task(name, param_definitions, script_file, auxiliar_files)
+    task = pyor.services.create_task(name, param_definitions, script_file, auxiliar_files)
 
     return jsonify(task.document), 201
 
@@ -63,5 +63,5 @@ def execute_task(task_id: str, data: Dict= None):
     if not task:
         return jsonify(errors=[{"field": "task_id", "message": "The task wasn't found!"}]), 404
 
-    mreq.services.enqueue_job(task, params, queue)
+    pyor.services.enqueue_job(task, params, queue)
     return Response(status=200)

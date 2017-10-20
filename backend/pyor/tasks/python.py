@@ -1,6 +1,6 @@
 import importlib.util
 
-from mreq.tasks.base import BaseTask
+from pyor.tasks.base import BaseTask
 
 
 def run_python_script(script_path, params):

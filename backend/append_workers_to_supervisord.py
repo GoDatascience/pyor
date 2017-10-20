@@ -22,10 +22,10 @@ def append_workers():
             number_of_processes: int = cfg["processes"] if "processes" in cfg else 1
             supervisor_content.append("""
             
-[program:mreq-worker-%s]
-directory=/opt/mreq/backend
+[program:pyor-worker-%s]
+directory=/opt/pyor/backend
 command=mrq-worker --config=%s
-process_name=mreqworker-%s-%%(process_num)s
+process_name=pyorworker-%s-%%(process_num)s
 numprocs=%d
 startsecs=1
 startretries=3

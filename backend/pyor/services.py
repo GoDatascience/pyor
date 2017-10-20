@@ -5,12 +5,12 @@ import os
 import mrq.job
 from werkzeug.datastructures import FileStorage
 
-from mreq.exceptions import TaskNameAlreadyExists
-from mreq.models import Task
+from pyor.exceptions import TaskNameAlreadyExists
+from pyor.models import Task
 
-R_TASK = "mreq.tasks.r.RTask"
+R_TASK = "pyor.tasks.r.RTask"
 
-PYTHON_TASK = "mreq.tasks.python.PythonTask"
+PYTHON_TASK = "pyor.tasks.python.PythonTask"
 
 
 def create_task(name: str, param_definitions: List[Dict], script_file: FileStorage,

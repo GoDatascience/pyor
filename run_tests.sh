@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker-compose -p mreq-tests run --rm -w /opt/mreq/backend backend python -m unittest /opt/mreq/backend/tests.py
+docker-compose -p pyor-tests run --rm -w /opt/pyor/backend backend python -m unittest /opt/pyor/backend/tests.py

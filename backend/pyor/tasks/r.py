@@ -3,7 +3,7 @@ import rpy2.robjects as ro
 from rpy2.robjects import conversion
 from rpy2.robjects.vectors import ListVector
 
-from mreq.tasks.base import BaseTask
+from pyor.tasks.base import BaseTask
 
 
 def run_r_script(script_path):

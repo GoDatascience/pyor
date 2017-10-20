@@ -1,7 +1,7 @@
-# mreq
-Mr. Experiment Queue - A worker task queue web application based in MRQ to queue experiments
+# pyor
+PyoR Experiment Lab - A plataform to manage experiments.
 
-In datascience, specially when working with Deep Learning, it's common to run experiments that may take hours or even days. If you simply run it in your server, you don't know when it's done running unless you keep checking. And chances are that you will notice it's finished after quite some time. Even worse, you may notice that the experiment didn't work out and you should adjust the parameters and try again. Between each trial, you'll probably lose a lot of time. That's why we created MREQ. With it, you'll be able to enqueue lots of experiments and they will start one after the other or in parallel, depending on your configuration. Even better, when an experiment is done, you can be notified via Telegram.
+In datascience, specially when working with Deep Learning, it's common to run experiments that may take hours or even days. If you simply run it in your server, you don't know when it's done running unless you keep checking. And chances are that you will notice it's finished after quite some time. Even worse, you may notice that the experiment didn't work out and you should adjust the parameters and try again. Between each trial, you'll probably lose a lot of time. That's why we created PYOR. With it, you'll be able to enqueue lots of experiments and they will start one after the other or in parallel, depending on your configuration. Even better, when an experiment is done, you can be notified via Telegram.
 
 # Features
 

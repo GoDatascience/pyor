@@ -14,8 +14,8 @@ services:
       - mongodb
       - redis
     volumes:
-      - ./backend:/opt/mreq/backend:ro
-      - data:/var/mreq
+      - ./backend:/opt/pyor/backend:ro
+      - data:/var/pyor
     links:
       - mongodb
       - redis

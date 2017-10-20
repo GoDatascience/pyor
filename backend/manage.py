@@ -1,4 +1,4 @@
-from mreq import manager
+from pyor import manager
 
 if __name__ == "__main__":
     manager.run()
