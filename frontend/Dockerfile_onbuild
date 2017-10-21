@@ -1,0 +1,30 @@
+# Trial to make the source auto reload
+FROM node:8
+
+MAINTAINER fernandocamargoti <fernando.camargo.ti@gmail.com>
+
+ENV PYOR_FRONTEND=/usr/src/app
+ENV NODE_MODULES_ROOT=/usr/src
+ENV NODE_MODULES=/usr/src/node_modules
+ENV PATH=$NODE_MODULES/.bin:$PATH
+
+RUN mkdir -p $PYOR_FRONTEND
+WORKDIR $PYOR_FRONTEND
+
+# install project npm modules
+# We install to a directory above the project so that modules will still be found
+#  but won't be overridden when mounting the project directory for development
+# Any modules we want to override (for local testing can be mounted in via the
+#  host machine) and will take preference being in the project directory
+COPY ./package.json $NODE_MODULES_ROOT
+WORKDIR $NODE_MODULES_ROOT
+RUN npm install
+
+# Reset working dir for runing project commands
+WORKDIR $PYOR_FRONTEND
+
+VOLUME ["$PYOR_FRONTEND"]
+
+EXPOSE 4200
+
+CMD ["npm", "start"]

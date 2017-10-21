@@ -1,15 +1,9 @@
-FROM node:8
+FROM node:8-onbuild
 
 MAINTAINER fernandocamargoti <fernando.camargo.ti@gmail.com>
 
 ENV PYOR_FRONTEND=/usr/src/app
-
-ADD package.json /tmp/package.json
-WORKDIR /tmp
-
-RUN npm install
-
-VOLUME ["$PYOR_FRONTEND"]
+ENV PATH=$NODE_MODULES/.bin:$PATH
 
 WORKDIR $PYOR_FRONTEND
 
