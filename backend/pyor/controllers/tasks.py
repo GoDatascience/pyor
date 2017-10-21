@@ -2,8 +2,9 @@ import json
 from typing import List, Dict
 
 import flask
+from bson.json_util import RELAXED_JSON_OPTIONS
 from flask.wrappers import Response
-from mrq.dashboard.utils import jsonify
+from pyor.utils import jsonify
 from werkzeug.datastructures import FileStorage
 
 import pyor.services
@@ -26,13 +27,12 @@ FIELD_PARAMS = "params"
 
 @app.route("/tasks", methods=["GET"])
 def get_tasks():
-    return jsonify(items=[task.document for task in Task.find_all()])
+    return jsonify(items=[task.to_mongo() for task in Task.objects])
 
 
 @app.route("/tasks", methods=["POST"])
 @extract_json_from_form("data")
 @required_fields(FIELD_NAME)
-@custom_validation(FIELD_NAME, lambda name: not Task.exists(name), "There's already a task with this name!")
 @validate_instance(FIELD_PARAM_DEFINITIONS, list)
 @required_files(FIELD_SCRIPT_FILE)
 @allowed_files(ALLOWED_SCRIPTS_EXTENSIONS, FIELD_SCRIPT_FILE)
@@ -46,7 +46,7 @@ def create_task(data: Dict= None):
 
     task = pyor.services.create_task(name, param_definitions, script_file, auxiliar_files)
 
-    return jsonify(task.document), 201
+    return jsonify(task.to_mongo()), 201
 
 @app.route("/tasks/<task_id>", methods=["PUT"])
 @extract_json
@@ -59,7 +59,7 @@ def execute_task(task_id: str, data: Dict= None):
     if not params:
         params = {}
 
-    task: Task = Task.find_one(task_id)
+    task: Task = Task.objects(pk=task_id).first()
     if not task:
         return jsonify(errors=[{"field": "task_id", "message": "The task wasn't found!"}]), 404
 

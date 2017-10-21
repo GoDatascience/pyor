@@ -10,25 +10,20 @@ from flask.testing import FlaskClient
 from mrq import config, context
 from mrq.context import set_current_config
 from mrq.utils import load_class_by_path
-from pymongo.collection import Collection
-from pymongo.database import Database
 from werkzeug.datastructures import FileStorage
 
 import pyor
 from pyor import app
 from pyor.controllers.tasks import FIELD_NAME, FIELD_PARAM_DEFINITIONS, FIELD_SCRIPT_FILE, FIELD_AUXILIAR_FILES, \
     FIELD_PARAMS, FIELD_QUEUE
-from pyor.models import Task
+from pyor.models import Task, Task
 import pyor.services
 
 import shutil
 
 from pyor.services import R_TASK
 
-EXCLUDED_KEYS = ["last_modified"]
-
 context.setup_context(file_path="workers/mrqconfig.py")
-database: Database = context.connections.mongodb_jobs
 
 
 class BaseTests(unittest.TestCase):
@@ -39,8 +34,7 @@ class BaseTests(unittest.TestCase):
     def setUp(self):
         os.chdir(os.environ["PYOR_BACKEND"])
         shutil.rmtree(os.path.join(os.environ["PYOR_DATA"], "tasks"), ignore_errors=True)
-        for collection_name in database.collection_names(False):
-            database[collection_name].drop()
+        Task.drop_collection()
 
 
 class TasksExecutionTests(BaseTests):
@@ -67,7 +61,7 @@ class TasksExecutionTests(BaseTests):
         # then
         self.assertEqual(result, 5)
 
-    def test_r_slowfib(self):
+    def test_r_draft(self):
         # given
         task = create_task("draft", 'samples/draft.r')
 
@@ -101,9 +95,9 @@ class TasksApiTests(BaseTests):
         items = data["items"]
         self.assertIsInstance(items, list)
         self.assertEqual(len(items), 2)
-        items_without_excluded_keys = [without_keys(item, EXCLUDED_KEYS) for item in items]
-        self.assertIn(without_keys(draft.raw_document, EXCLUDED_KEYS), items_without_excluded_keys)
-        self.assertIn(without_keys(randombox.raw_document, EXCLUDED_KEYS), items_without_excluded_keys)
+        documents = [Task.from_json(json.dumps(item)) for item in items]
+        self.assertIn(draft, documents)
+        self.assertIn(randombox, documents)
 
     def test_successful_create_task(self):
         # given
@@ -118,9 +112,9 @@ class TasksApiTests(BaseTests):
         # then
         self.assertEqual(response.status_code, 201)
         data = json.loads(response.data)
-        task = Task.find_one(data["_id"])
+        task = Task.objects(pk=data["_id"]).first()
         self.assertIsNotNone(task)
-        self.assertEqual(without_keys(data, EXCLUDED_KEYS), without_keys(task.raw_document, EXCLUDED_KEYS))
+        self.assertEqual(Task.from_json(response.data), task)
         self.assertTrue(os.path.exists(task.working_dir))
         self.assertTrue(os.path.exists(os.path.join(task.working_dir, )))
 
@@ -132,7 +126,7 @@ class TasksApiTests(BaseTests):
         # when
         params = {"param1": 1, "param2": "2"}
         queue = "sequential"
-        response = self.app.put("/tasks/%s" % str(task.id),
+        response = self.app.put("/tasks/%s" % str(task.pk),
                                 content_type="application/json",
                                 data=json.dumps({FIELD_PARAMS: params, FIELD_QUEUE: queue}))
 
@@ -140,10 +134,6 @@ class TasksApiTests(BaseTests):
         self.assertEqual(response.status_code, 200)
         mock_queue_job.assert_called_once_with(R_TASK, {**task.params, **params}, queue=queue)
 
-
-
-def without_keys(document, keys):
-    return {x: document[x] for x in document if x not in keys}
 
 def create_task(name: str, script_file_path: str, param_definitions=None):
     if param_definitions is None:

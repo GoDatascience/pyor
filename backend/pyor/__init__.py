@@ -1,12 +1,15 @@
 from flask import Flask
 from flask_script import Manager
 from flask_cors import CORS
+import mongoengine
 from mrq import context
 
 # Flask
 app = Flask(__name__)
 app.config.from_object('config')
 CORS(app)
+
+mongoengine.connect('pyor', host='mongodb://mongodb:27017/pyor')
 
 manager = Manager(app)
 

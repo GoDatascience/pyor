@@ -30,8 +30,8 @@ services:
       - "${FRONTEND_PORT}:4200"
     depends_on:
       - backend
-    volumes:
-      - ./frontend:/usr/src/app
+#    volumes:
+#      - ./frontend:/usr/src/app
     links:
       - backend
   mongodb:
