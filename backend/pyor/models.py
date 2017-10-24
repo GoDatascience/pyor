@@ -2,7 +2,10 @@ import os
 
 from datetime import datetime
 
+import mongoengine
 from mongoengine import *
+
+mongoengine.connect('pyor', host='mongodb://mongodb:27017/pyor')
 
 class Queue(Document):
     name = StringField(required=True, unique=True)
@@ -48,3 +51,19 @@ class Task(Document):
         return {"task_name": self.name,
                 "working_dir": self.working_dir,
                 "script_path": self.script_path}
+
+class Job(Document):
+    id = StringField(primary_key=True)
+    task = ReferenceField(Task, required=True)
+    params = DictField()
+    queue = ReferenceField(Queue, required=True)
+    status = StringField(required=True)
+    result = DynamicField()
+    retry_count = IntField(default=0)
+    date_received = DateTimeField()
+    date_started = DateTimeField()
+    date_last_update = DateTimeField()
+    date_done = DateTimeField()
+    traceback = StringField()
+    children = DynamicField()
+    progress = FloatField(min_value=0.0, max_value=1.0)

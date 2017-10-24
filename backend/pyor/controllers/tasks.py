@@ -1,18 +1,15 @@
-import json
 from typing import List, Dict
 
 import flask
-from bson.json_util import RELAXED_JSON_OPTIONS
 from flask.wrappers import Response
 from pyor.utils import jsonify
 from werkzeug.datastructures import FileStorage
 
 import pyor.services
-from pyor import app
+from pyor.controllers import app
 from pyor.controllers.validations import extract_json_from_form, required_fields, validate_instance, required_files, \
     allowed_files, allowed_file_lists, filter_errors, custom_validation, extract_json
-from pyor.models import Task
-
+from pyor.models import Task, Queue
 
 ALLOWED_EXTENSIONS = app.config["ALLOWED_EXTENSIONS"]
 ALLOWED_SCRIPTS_EXTENSIONS = app.config["ALLOWED_SCRIPTS_EXTENSIONS"]
@@ -63,5 +60,5 @@ def execute_task(task_id: str, data: Dict= None):
     if not task:
         return jsonify(errors=[{"field": "task_id", "message": "The task wasn't found!"}]), 404
 
-    pyor.services.enqueue_job(task, params, queue)
+    pyor.services.enqueue_job(task, params, Queue.objects.get(name=queue))
     return Response(status=200)

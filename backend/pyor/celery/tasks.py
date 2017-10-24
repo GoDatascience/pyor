@@ -3,6 +3,7 @@ import os
 import importlib.util
 import pathlib
 import json
+from logging import Logger
 from typing import Dict
 
 import rpy2.rinterface as ri
@@ -13,8 +14,10 @@ import celery
 from celery.utils.log import get_task_logger
 
 from pyor.celery import app
+from pyor.celery.states import PROGRESS
+from pyor.models import Job, Task
 
-logger = get_task_logger(__name__)
+logger: Logger = get_task_logger(__name__)
 
 
 class BaseTask(celery.Task):
@@ -38,7 +41,10 @@ class BaseTask(celery.Task):
         logger.info("Running task...")
 
     def update_progress(self, progress: float):
-        self.update_state(state="PROGRESS", meta={progress: progress})
+        if not isinstance(progress, float) or progress < 0.0 or progress > 1.0:
+            logger.error("Tried to set progress to {}".format(progress))
+            return
+        self.update_state(state=PROGRESS, meta={"progress": progress})
 
 
 @app.task(base=BaseTask, bind=True)
