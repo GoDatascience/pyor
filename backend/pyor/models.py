@@ -4,6 +4,27 @@ from datetime import datetime
 
 from mongoengine import *
 
+class Queue(Document):
+    name = StringField(required=True, unique=True)
+
+class Worker(Document):
+    name = StringField(required=True, unique=True)
+    queues = ListField(ReferenceField(Queue))
+    num_processes = IntField(min_value=1)
+
+    @property
+    def start_command(self):
+        return "celery multi start {} -A pyor.celery --loglevel=INFO --events --concurrency={} --queues={} --pidfile={} --logfile={}"\
+            .format(self.name, self.num_processes, ",".join([queue.name for queue in self.queues]), self.pidfile, self.logfile)
+
+    @property
+    def pidfile(self):
+        return os.path.join(os.environ["PYOR_RUN"], "%n.pid")
+
+    @property
+    def logfile(self):
+        return os.path.join(os.environ["PYOR_LOG"], "%n%I.log")
+
 class ParamDefinition(EmbeddedDocument):
     name = StringField(required=True)
     type = StringField(required=True, choices=("text", "number", "date", "boolean"))

@@ -1,15 +1,13 @@
 from typing import Dict
 
-from mrq import context
 
-
-def run(params: Dict):
+def run(self, params: Dict):
     n = params["n"]
-    slow_fib(n)
+    return slow_fib(self, n)
 
-def slow_fib(n):
-    context.set_current_job_progress(1 / (n if n > 0 else 1))
+def slow_fib(self, n):
     if n <= 1:
         return 1
     else:
-        return slow_fib(n-1) + slow_fib(n-2)
+        self.update_progress(1 / (n if n > 0 else 1))
+        return slow_fib(self, n-1) + slow_fib(self, n-2)

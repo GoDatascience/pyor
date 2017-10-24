@@ -2,14 +2,10 @@ import pathlib
 from typing import List, Dict, Union
 
 import os
-import mrq.job
 from werkzeug.datastructures import FileStorage
 
 from pyor.models import Task, ParamDefinition
-
-R_TASK = "pyor.tasks.r.RTask"
-
-PYTHON_TASK = "pyor.tasks.python.PythonTask"
+from pyor.tasks import python_task, r_task
 
 
 def create_task(name: str, param_definitions: List[Dict], script_file: FileStorage,
@@ -26,6 +22,5 @@ def create_task(name: str, param_definitions: List[Dict], script_file: FileStora
 
 
 def enqueue_job(task: Task, params: Dict, queue: str):
-    params = {**task.params, **params}
-    mrq.job.queue_job(PYTHON_TASK if ".py" in task.script_name else R_TASK,
-                      params, queue=queue)
+    celery_task = python_task if ".py" in task.script_name else r_task
+    celery_task.apply_async((task.working_dir, task.script_path, params), shadow=task.name, queue=queue)

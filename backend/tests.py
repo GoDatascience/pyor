@@ -7,9 +7,6 @@ from io import FileIO, BytesIO
 from unittest.mock import patch, MagicMock
 
 from flask.testing import FlaskClient
-from mrq import config, context
-from mrq.context import set_current_config
-from mrq.utils import load_class_by_path
 from werkzeug.datastructures import FileStorage
 
 import pyor
@@ -20,10 +17,6 @@ from pyor.models import Task, Task
 import pyor.services
 
 import shutil
-
-from pyor.services import R_TASK
-
-context.setup_context(file_path="workers/mrqconfig.py")
 
 
 class BaseTests(unittest.TestCase):
@@ -135,7 +128,7 @@ class TasksApiTests(BaseTests):
         mock_queue_job.assert_called_once_with(R_TASK, {**task.params, **params}, queue=queue)
 
 
-def create_task(name: str, script_file_path: str, param_definitions=None):
+def create_task(name: str, script_file_path: str, param_definitions=None) -> Task:
     if param_definitions is None:
         param_definitions = []
 
