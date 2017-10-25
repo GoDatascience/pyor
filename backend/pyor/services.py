@@ -1,15 +1,14 @@
-import pathlib
-from typing import List, Dict, Union
-
 import os
-import mrq.job
+import pathlib
+from datetime import datetime
+from typing import List, Dict
+
+from kombu import uuid
 from werkzeug.datastructures import FileStorage
 
-from pyor.models import Task, ParamDefinition
-
-R_TASK = "pyor.tasks.r.RTask"
-
-PYTHON_TASK = "pyor.tasks.python.PythonTask"
+from pyor.celery.states import PENDING
+from pyor.celery.tasks import python_task, r_task
+from pyor.models import Task, ParamDefinition, Job, Queue
 
 
 def create_task(name: str, param_definitions: List[Dict], script_file: FileStorage,
@@ -25,7 +24,10 @@ def create_task(name: str, param_definitions: List[Dict], script_file: FileStora
     return task
 
 
-def enqueue_job(task: Task, params: Dict, queue: str):
-    params = {**task.params, **params}
-    mrq.job.queue_job(PYTHON_TASK if ".py" in task.script_name else R_TASK,
-                      params, queue=queue)
+def enqueue_job(task: Task, params: Dict, queue: Queue):
+    task_id = uuid()
+
+    Job(id=task_id, task=task, status=PENDING, date_received=datetime.utcnow(), params=params, queue=queue).save()
+
+    celery_task = python_task if ".py" in task.script_name else r_task
+    celery_task.apply_async((task.working_dir, task.script_path, params), task_id=task_id, task=task, shadow=task.name, queue=queue.name)

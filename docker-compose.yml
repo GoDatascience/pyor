@@ -13,12 +13,15 @@ services:
     depends_on:
       - mongodb
       - redis
+      - rabbitmq
     volumes:
       - ./backend:/opt/pyor/backend:ro
       - data:/var/pyor
+      - /tmp/pyor/log:/var/log/pyor
     links:
       - mongodb
       - redis
+      - rabbitmq
   frontend:
     build:
       context: ./frontend
@@ -42,7 +45,17 @@ services:
     image: redis:alpine
     volumes:
       - redis_data:/data
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: rabbitmq
+    volumes:
+     - rabbitmq_data:/var/lib/rabbitmq
+    environment:
+     - RABBITMQ_DEFAULT_USER=pyor
+     - RABBITMQ_DEFAULT_PASS=pyor
+     - RABBITMQ_DEFAULT_VHOST=pyor
 volumes:
   data:
   mongo_data:
   redis_data:
+  rabbitmq_data:

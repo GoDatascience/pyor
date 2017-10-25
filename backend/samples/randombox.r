@@ -8,7 +8,7 @@ randombox = function(ret, rept) {
     total_sum=c()
 
     for(j in 1:rept){
-        set_progress(j/rept)
+        update_progress(j/rept)
         for(i in 1:ret){
             s=sample(1:cvd+cvm, 1, rep = T)
             if(1<s && s<=cvd){

@@ -20,24 +20,21 @@ RUN conda env create -f /tmp/environment.yml -n pyor
 
 ENV PYOR_BACKEND=/opt/pyor/backend \
     PYOR_DATA=/var/pyor \
-    PYOR_ENV=/opt/conda/envs/pyor \
-    SUPERVISOR_ENABLED=True
+    PYOR_RUN=/var/run/pyor \
+    PYOR_LOG=/var/log/pyor \
+    PYOR_ENV=/opt/conda/envs/pyor
+
+RUN mkdir -p $PYOR_DATA && \
+    mkdir -p $PYOR_RUN && \
+    mkdir -p $PYOR_LOG
 
 ENV PATH=$PYOR_ENV/bin:$PATH
 
-ADD supervisord.conf /tmp/supervisord/supervisord.conf
-ADD append_workers_to_supervisord.py /tmp/supervisord/append_workers_to_supervisord.py
-ADD workers /tmp/supervisord/workers
+VOLUME ["$PYOR_BACKEND", "$PYOR_DATA", "$PYOR_LOG"]
 
-WORKDIR /tmp/supervisord
-RUN python append_workers_to_supervisord.py > /etc/supervisor/conf.d/supervisord.conf
-
-WORKDIR /root
-RUN rm -r /tmp/supervisord
-
-VOLUME ["$PYOR_BACKEND", "$PYOR_DATA"]
+WORKDIR $PYOR_BACKEND
 
 # Flask and Dashboard
 EXPOSE 5000 5555
 
-CMD [ "/usr/bin/supervisord" ]
+CMD python manage.py runserver

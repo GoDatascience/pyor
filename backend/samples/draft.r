@@ -32,7 +32,7 @@ files.not.downloades.indexes = !map_lgl(files.names, file.exists)
 
 # Download files
 map2(urls[files.not.downloades.indexes],  files.names[files.not.downloades.indexes], download.file)
-set_progress(0.25)
+update_progress(0.25)
 
 # Define dataframe to save performance data
 
@@ -49,7 +49,7 @@ df = read.csv(files.names[3])
 
 time.loading[1] = as.double(Sys.time() - time.init)
 
-set_progress(0.5)
+update_progress(0.5)
 
 # Test read_csv [readr]
 time.init = Sys.time()
@@ -60,7 +60,7 @@ df = read_csv(files.names[3])
 
 time.loading[2] = as.double(Sys.time() - time.init)
 
-set_progress(0.75)
+update_progress(0.75)
 
 # Test fread [data.table]
 time.init = Sys.time()
@@ -71,7 +71,7 @@ df = fread(files.names[3])
 
 time.loading[3] = as.double(Sys.time() - time.init)
 
-set_progress(0.99)
+update_progress(0.99)
 
 # Plot results
 jpeg(file.path(params$output_dir, "Plot.jpg"))
@@ -84,4 +84,4 @@ barplot(time.loading,
 
 dev.off()
 
-set_progress(1.0)
+update_progress(1.0)
