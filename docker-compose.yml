@@ -12,7 +12,6 @@ services:
       - "${DASHBOARD_PORT}:5555"
     depends_on:
       - mongodb
-      - redis
       - rabbitmq
     volumes:
       - ./backend:/opt/pyor/backend:ro
@@ -20,7 +19,6 @@ services:
       - /tmp/pyor/log:/var/log/pyor
     links:
       - mongodb
-      - redis
       - rabbitmq
   frontend:
     build:
@@ -41,10 +39,6 @@ services:
     image: mongo:latest
     volumes:
       - mongo_data:/data/db
-  redis:
-    image: redis:alpine
-    volumes:
-      - redis_data:/data
   rabbitmq:
     image: rabbitmq:3-management
     hostname: rabbitmq
@@ -57,5 +51,4 @@ services:
 volumes:
   data:
   mongo_data:
-  redis_data:
   rabbitmq_data:
