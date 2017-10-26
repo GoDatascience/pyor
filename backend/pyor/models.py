@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 
 import mongoengine
+from pyor.celery.states import PENDING
 from mongoengine import *
 
 mongoengine.connect('pyor', host='mongodb://mongodb:27017/pyor')
@@ -53,11 +54,10 @@ class Task(Document):
                 "script_path": self.script_path}
 
 class Job(Document):
-    id = StringField(primary_key=True)
     task = ReferenceField(Task, required=True)
     params = DictField()
     queue = ReferenceField(Queue, required=True)
-    status = StringField(required=True)
+    status = StringField(required=True, default=PENDING)
     result = DynamicField()
     retry_count = IntField(default=0)
     date_received = DateTimeField()
