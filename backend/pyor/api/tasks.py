@@ -6,8 +6,8 @@ from pyor.utils import jsonify
 from werkzeug.datastructures import FileStorage
 
 import pyor.services
-from pyor.controllers import app
-from pyor.controllers.validations import extract_json_from_form, required_fields, validate_instance, required_files, \
+from pyor.api import app
+from pyor.api.validations import extract_json_from_form, required_fields, validate_instance, required_files, \
     allowed_files, allowed_file_lists, filter_errors, custom_validation, extract_json
 from pyor.models import Task, Queue
 

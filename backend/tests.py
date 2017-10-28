@@ -11,7 +11,7 @@ from werkzeug.datastructures import FileStorage
 
 import pyor
 from pyor import app
-from pyor.controllers.tasks import FIELD_NAME, FIELD_PARAM_DEFINITIONS, FIELD_SCRIPT_FILE, FIELD_AUXILIAR_FILES, \
+from pyor.api.tasks import FIELD_NAME, FIELD_PARAM_DEFINITIONS, FIELD_SCRIPT_FILE, FIELD_AUXILIAR_FILES, \
     FIELD_PARAMS, FIELD_QUEUE
 from pyor.models import Task, Task
 import pyor.services

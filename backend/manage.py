@@ -1,9 +1,11 @@
 import subprocess
 
 import multiprocessing
+
+import os
 from flask_script import Manager
 
-from pyor.controllers import app
+from pyor.api import app
 from pyor.models import Queue, Worker
 
 manager = Manager(app)
@@ -39,7 +41,7 @@ def runserver():
     run_flower()
 
     # Flask
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=os.environ.get("PORT"))
 
 if __name__ == "__main__":
     manager.run()

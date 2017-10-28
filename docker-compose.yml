@@ -7,6 +7,10 @@ services:
         - BASE_IMAGE=${BASE_IMAGE}
     environment:
       - ENV=${ENV}
+      - MONGO_HOST=${MONGO_HOST}
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_DBNAME=${MONGO_DBNAME}
+      - PORT=${BACKEND_PORT}
     ports:
       - "${BACKEND_PORT}:5000"
       - "${DASHBOARD_PORT}:5555"
