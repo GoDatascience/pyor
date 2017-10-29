@@ -193,13 +193,17 @@ class SchemaMapper(object):
             if field.__class__ is ReferenceField and not issubclass(field.document_type, FileSource):
                 fname = field.db_field
                 subresource_settings = copy.deepcopy(resource_settings)
+                if "resource_methods" in subresource_settings:
+                    subresource_settings["resource_methods"] = list(set(subresource_settings["resource_methods"])
+                        .intersection({"GET", "DELETE"}))
+                subresource_settings["item_methods"] = []
                 subresource = field.document_type.__name__
                 if lowercase:
                     subresource = subresource.lower()
                 if field.document_type in registrations:
-                    resource_settings = registrations[field.document_type]
-                    subresource_url = resource_settings.get("url", subresource)
-                    subresource_datasource = resource_settings.get("datasource", {"source": subresource})
+                    _resource_settings = registrations[field.document_type]
+                    subresource_url = _resource_settings.get("url", subresource)
+                    subresource_datasource = _resource_settings.get("datasource", {"source": subresource})
                 else:
                     subresource_url = subresource
                     subresource_datasource = {"source": subresource}
