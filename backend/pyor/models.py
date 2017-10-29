@@ -75,7 +75,7 @@ class Task(Document):
                 "script_path": self.script_path}
 
 
-class Job(Document):
+class Experiment(Document):
     task = ReferenceField(Task, required=True, db_field="task_id")
     params = DictField()
     queue = ReferenceField(Queue, required=True, db_field="queue_id")

@@ -15,7 +15,7 @@ from celery.utils.log import get_task_logger
 
 from pyor.celery import app
 from pyor.celery.states import PROGRESS
-from pyor.models import Job, Task
+from pyor.models import Experiment, Task
 
 logger: Logger = get_task_logger(__name__)
 

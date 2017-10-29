@@ -37,7 +37,7 @@ class TasksExecutionTests(BaseTests):
         task = create_task("slowbix", 'samples/slow_fib.py')
 
         # when
-        pyor.services.enqueue_job(task, {"n": 20}, "sequential")
+        pyor.services.enqueue_experiment(task, {"n": 20}, "sequential")
         result = start_worker()
 
         # then
@@ -48,7 +48,7 @@ class TasksExecutionTests(BaseTests):
         task = create_task("randombox", 'samples/randombox.r')
 
         # when
-        pyor.services.enqueue_job(task, {"ret": 2, "rept": 1000}, "sequential")
+        pyor.services.enqueue_experiment(task, {"ret": 2, "rept": 1000}, "sequential")
         result = start_worker()
 
         # then
@@ -59,7 +59,7 @@ class TasksExecutionTests(BaseTests):
         task = create_task("draft", 'samples/draft.r')
 
         # when
-        pyor.services.enqueue_job(task, {}, "sequential")
+        pyor.services.enqueue_experiment(task, {}, "sequential")
         result = start_worker()
 
         # then
@@ -111,8 +111,8 @@ class TasksApiTests(BaseTests):
         self.assertTrue(os.path.exists(task.working_dir))
         self.assertTrue(os.path.exists(os.path.join(task.working_dir, )))
 
-    @patch("mrq.job.queue_job")
-    def test_successful_execute_task(self, mock_queue_job: MagicMock):
+    @patch("mrq.job.queue_experiment")
+    def test_successful_execute_task(self, mock_queue_experiment: MagicMock):
         # given
         task = create_task("draft", 'samples/draft.r', [])
 
@@ -125,7 +125,7 @@ class TasksApiTests(BaseTests):
 
         # then
         self.assertEqual(response.status_code, 200)
-        mock_queue_job.assert_called_once_with(R_TASK, {**task.params, **params}, queue=queue)
+        mock_queue_experiment.assert_called_once_with(R_TASK, {**task.params, **params}, queue=queue)
 
 
 def create_task(name: str, script_file_path: str, param_definitions=None) -> Task:
@@ -147,7 +147,7 @@ def start_worker():
     worker_class = load_class_by_path(cfg["worker_class"])
     set_current_config(cfg)
     worker = worker_class()
-    worker.max_jobs = 1
+    worker.max_experiments = 1
     return worker.work()
 
 

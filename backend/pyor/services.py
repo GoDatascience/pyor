@@ -8,7 +8,7 @@ from werkzeug.datastructures import FileStorage
 
 from pyor.celery.states import PENDING
 from pyor.celery.tasks import python_task, r_task
-from pyor.models import Task, ParamDefinition, Job, Queue
+from pyor.models import Task, ParamDefinition, Experiment, Queue
 
 
 def create_task(name: str, param_definitions: List[Dict], script_file: FileStorage,
@@ -24,8 +24,8 @@ def create_task(name: str, param_definitions: List[Dict], script_file: FileStora
     return task
 
 
-def enqueue_job(task: Task, params: Dict, queue: Queue):
-    job = Job(task=task, date_received=datetime.utcnow(), params=params, queue=queue).save()
+def enqueue_experiment(task: Task, params: Dict, queue: Queue):
+    experiment = Experiment(task=task, date_received=datetime.utcnow(), params=params, queue=queue).save()
 
     celery_task = python_task if ".py" in task.script_name else r_task
-    celery_task.apply_async((task.working_dir, task.script_path, params), task_id=str(job.id), task=task, shadow=task.name, queue=queue.name)
+    celery_task.apply_async((task.working_dir, task.script_path, params), task_id=str(experiment.id), task=task, shadow=task.name, queue=queue.name)

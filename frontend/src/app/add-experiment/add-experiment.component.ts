@@ -12,11 +12,11 @@ import {InfoDialogService} from "../info-dialog/info-dialog.service";
 
 
 @Component({
-  selector: 'app-add-job',
-  templateUrl: './add-job.component.html',
-  styleUrls: ['./add-job.component.css']
+  selector: 'app-add-experiment',
+  templateUrl: './add-experiment.component.html',
+  styleUrls: ['./add-experiment.component.css']
 })
-export class AddJobComponent implements OnInit {
+export class AddExperimentComponent implements OnInit {
   taskCtrl: FormControl;
   filtredTasks: any;
   tasks: Task[] = [];
@@ -44,7 +44,7 @@ export class AddJobComponent implements OnInit {
     return this.http.get("http://localhost:5000/tasks")
       .toPromise()
       .then(response => response.json().items as Task[])
-      .catch(AddJobComponent.handleError);
+      .catch(AddExperimentComponent.handleError);
   }
 
   private static handleError(error: any): Promise<any> {
@@ -72,8 +72,8 @@ export class AddJobComponent implements OnInit {
   }
 
 
-  showDialogJobStarted(): MdDialogRef<InfoDialogComponent> {
-    const msg = "Job started!";
+  showDialogExperimentStarted(): MdDialogRef<InfoDialogComponent> {
+    const msg = "Experiment started!";
     return this.infoDialogService.showDialog(msg);
   }
 
@@ -81,7 +81,7 @@ export class AddJobComponent implements OnInit {
     return this.tasks.filter(task => task.name === taskName)[0];
   }
 
-  startJob() {
+  startExperiment() {
     console.log(this.getSelectedTask());
     console.log("Run....", this.getSelectedTask()._id);
     this.http.put("http://localhost:5000/tasks/" + this.getSelectedTask()._id, {
@@ -89,9 +89,9 @@ export class AddJobComponent implements OnInit {
     }).toPromise()
       .then(response=> {
         if (response.status == 200) {
-          this.showDialogJobStarted();
+          this.showDialogExperimentStarted();
         }
       })
-      .catch(AddJobComponent.handleError);
+      .catch(AddExperimentComponent.handleError);
   }
 }

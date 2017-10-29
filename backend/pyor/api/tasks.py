@@ -60,5 +60,5 @@ def execute_task(task_id: str, data: Dict= None):
     if not task:
         return jsonify(errors=[{"field": "task_id", "message": "The task wasn't found!"}]), 404
 
-    pyor.services.enqueue_job(task, params, Queue.objects.get(name=queue))
+    pyor.services.enqueue_experiment(task, params, Queue.objects.get(name=queue))
     return Response(status=200)
