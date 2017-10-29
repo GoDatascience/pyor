@@ -6,9 +6,9 @@ In datascience, specially when working with Deep Learning, it's common to run ex
 # Features
 
 - Create Tasks with name, script and auxiliar files. Both Python and R are compatible.
-- Enqueue as many jobs as desired by selecting a registered Task and setting the parameters.
+- Enqueue as many experiments as desired by selecting a registered Task and setting the parameters.
 - Configure workers and the queues they will consume from. By default, there're two workers: sequential and parallel.
-- Be notified when a job has been concluded
+- Be notified when a experiment has been concluded
 
 # How to use
 

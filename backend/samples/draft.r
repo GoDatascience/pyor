@@ -74,7 +74,7 @@ time.loading[3] = as.double(Sys.time() - time.init)
 update_progress(0.99)
 
 # Plot results
-jpeg(file.path(params$output_dir, "Plot.jpg"))
+jpeg(file.path("Plot.jpg"))
 
 barplot(time.loading,
         main = "Performance analysis of Data Frame loading",

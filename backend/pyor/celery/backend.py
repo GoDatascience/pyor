@@ -5,7 +5,7 @@ from celery.backends.base import BaseBackend
 from pyor.celery.states import PENDING, READY_STATES, RETRY, STARTED
 from kombu.utils import cached_property
 
-from pyor.models import Job
+from pyor.models import Experiment
 
 
 class PyorBackend(BaseBackend):
@@ -16,54 +16,54 @@ class PyorBackend(BaseBackend):
     def _store_result(self, task_id, result, state,
                       traceback=None, request=None, **kwargs):
         """Store return value and state of an executed task."""
-        job = Job.objects.get(id=task_id)
+        experiment = Experiment.objects.get(id=task_id)
 
-        if job:
-            job.status = state
+        if experiment:
+            experiment.status = state
             if state == STARTED:
-                job.date_started = datetime.utcnow()
+                experiment.date_started = datetime.utcnow()
             if state in READY_STATES:
-                job.date_done = datetime.utcnow()
+                experiment.date_done = datetime.utcnow()
             if state == RETRY:
-                job.retry_count += 1
-            job.date_last_update = datetime.utcnow()
-            job.result = result
-            job.traceback = traceback
-            job.children = self.current_task_children(request)
+                experiment.retry_count += 1
+            experiment.date_last_update = datetime.utcnow()
+            experiment.result = result
+            experiment.traceback = traceback
+            experiment.children = self.current_task_children(request)
 
             if isinstance(result, dict) and "progress" in result:
-               job.progress = result["progress"]
+               experiment.progress = result["progress"]
 
-            job.save()
+            experiment.save()
 
         return result
 
     def _get_task_meta_for(self, task_id):
         """Get task meta-data for a task by id."""
-        job = Job.objects.get(id=task_id)
+        experiment = Experiment.objects.get(id=task_id)
 
-        if not job:
+        if not experiment:
             return {'status': PENDING, 'result': None}
 
         return self.meta_from_decoded({
             'task_id': task_id,
-            'status': job.status,
-            'result': job.result,
-            'traceback': job.traceback,
-            'children': job.children,
+            'status': experiment.status,
+            'result': experiment.result,
+            'traceback': experiment.traceback,
+            'children': experiment.children,
         })
 
     def _forget(self, task_id):
         """Remove result."""
-        job = Job.objects.get(id=task_id)
-        if job:
-            job.delete()
+        experiment = Experiment.objects.get(id=task_id)
+        if experiment:
+            experiment.delete()
 
     def cleanup(self):
         """Delete expired meta-data."""
         if self.expires_delta:
-            for job in Job.objects(date_done__lt= self.app.now() - self.expires_delta):
-                job.delete()
+            for experiment in Experiment.objects(date_done__lt= self.app.now() - self.expires_delta):
+                experiment.delete()
 
     @cached_property
     def expires_delta(self):

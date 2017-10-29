@@ -8,7 +8,7 @@ import {AppComponent} from './app.component';
 import {RouterModule, Routes} from "@angular/router";
 import {MRQDashboardComponent} from './mrq-dashboard/mrq-dashboard.component';
 import {AddTaskComponent} from './add-task/add-task.component';
-import {AddJobComponent} from './add-job/add-job.component';
+import {AddExperimentComponent} from './add-experiment/add-experiment.component';
 import {MultiFileSelectorComponent} from './multi-file-selector/multi-file-selector.component';
 import {InputFileComponent} from "./input-file/input-file.component";
 import {HttpClientModule} from '@angular/common/http';
@@ -20,7 +20,7 @@ const appRoutes: Routes = [
   {path: '', redirectTo: '/mrq-dashboard', pathMatch: 'full'},
   {path: 'mrq-dashboard', component: MRQDashboardComponent, pathMatch: 'full'},
   {path: 'add-task', component: AddTaskComponent, pathMatch: 'full'},
-  {path: 'add-job', component: AddJobComponent, pathMatch: 'full'}
+  {path: 'add-experiment', component: AddExperimentComponent, pathMatch: 'full'}
 ];
 
 
@@ -29,7 +29,7 @@ const appRoutes: Routes = [
     AppComponent,
     MRQDashboardComponent,
     AddTaskComponent,
-    AddJobComponent,
+    AddExperimentComponent,
     MultiFileSelectorComponent,
     InputFileComponent,
     InfoDialogComponent
