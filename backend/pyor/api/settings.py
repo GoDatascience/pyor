@@ -1,5 +1,7 @@
 import os
 
+from pyor.models import LAST_UPDATED, DATE_CREATED, ETAG
+
 SETTINGS = {
     "DEBUG": True if os.environ.get("ENV") == "development" else False,
     "MONGO_HOST": os.environ["MONGO_HOST"],
@@ -11,6 +13,9 @@ SETTINGS = {
 
     "PAGINATION_DEFAULT": 10,
 
+    "LAST_UPDATED": LAST_UPDATED,
+    "DATE_CREATED": DATE_CREATED,
+    "ETAG": ETAG,
     "DATE_FORMAT": "%Y-%m-%dT%H:%M:%S.%f%z",
 
     "RESOURCE_METHODS": ["GET", "POST"],

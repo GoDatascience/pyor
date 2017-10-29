@@ -1,4 +1,5 @@
 from eve import Eve
+from eve.io.mongo.mongo import Mongo
 from eve_swagger import swagger, add_documentation
 from flask_cors.extension import CORS
 
@@ -9,7 +10,7 @@ from pyor.api.mapper import register_resource
 from pyor.api.settings import SETTINGS
 
 
-app = Eve(settings=SETTINGS, media=PyorMediaStorage)
+app = Eve(settings=SETTINGS, media=PyorMediaStorage, data=Mongo)
 app.register_blueprint(swagger)
 CORS(app)
 

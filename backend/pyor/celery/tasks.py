@@ -15,30 +15,14 @@ from celery.utils.log import get_task_logger
 
 from pyor.celery import app
 from pyor.celery.states import PROGRESS
-from pyor.models import Experiment, Task
+from pyor.models import Experiment, Task, TaskFiles, FileSource
+
+__all__ = ["experiment_task"]
 
 logger: Logger = get_task_logger(__name__)
 
 
 class BaseTask(celery.Task):
-
-    track_started = True
-
-    def setup(self, working_dir: str, script_path: str, params: Dict):
-        logger.info("Setting script_path: %s" % (script_path))
-
-        params["output_dir"] = os.path.join(working_dir, str(self.request.id))
-        logger.info("Creating output_dir: %s" % (params["output_dir"]))
-        pathlib.Path(params["output_dir"]).mkdir(parents=True, exist_ok=True)
-
-        params_file_path = os.path.join(params["output_dir"], "params.json")
-        logger.info("Saving params.json: %s" % (params_file_path))
-        with open(params_file_path, 'x') as params_file:
-            json.dump(params, params_file)
-
-        os.chdir(working_dir)
-
-        logger.info("Running task...")
 
     def update_progress(self, progress: float):
         if not isinstance(progress, float) or progress < 0.0 or progress > 1.0:
@@ -46,22 +30,43 @@ class BaseTask(celery.Task):
             return
         self.update_state(state=PROGRESS, meta={"progress": progress})
 
-
 @app.task(base=BaseTask, bind=True)
-def python_task(self, working_dir: str, script_path: str, params: Dict):
-    self.setup(working_dir, script_path, params)
+def experiment_task(self: BaseTask, id: str):
+    experiment: Experiment = Experiment.objects.get(id=id)
+    files: TaskFiles = experiment.task.files
 
-    spec = importlib.util.spec_from_file_location('task', script_path)
-    task = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(task)
-    return task.run(self, params)
+    experiment_dir: str = os.path.join(experiment.task.dirpath, "experiments", str(experiment.id))
+    logger.info("Creating experiment dir and changing workdir: {}".format(experiment_dir))
+    pathlib.Path(experiment_dir).mkdir(parents=True, exist_ok=True)
+    os.chdir(experiment_dir)
 
-@app.task(base=BaseTask, bind=True)
-def r_task(self, working_dir: str, script_path: str, params: Dict):
-    self.setup(working_dir, script_path, params)
+    script_path = _symlink_file_source(files.script_file, experiment_dir)
+    logger.info("Symlink created: {}".format(script_path))
+    for auxiliar_file in files.auxiliar_files:
+        symlink_path = _symlink_file_source(auxiliar_file, experiment_dir)
+        logger.info("Symlink created: {}".format(symlink_path))
 
-    ro.globalenv['update_progress'] = ri.rternalize(self.update_progress)
+    if script_path.lower().endswith(".py"):
+        logger.info("Starting Python experiment...")
+        return execute_python_script(self, script_path, experiment.params)
+    else:
+        logger.info("Starting R experiment...")
+        return execute_r__script(self, script_path, experiment.params)
+
+def execute_python_script(task: experiment_task, script_path: str, params: Dict):
+    spec = importlib.util.spec_from_file_location('task_module', script_path)
+    task_module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(task_module)
+    return task_module.run(task, params)
+
+def execute_r__script(task: experiment_task, script_path: str, params: Dict):
+    ro.globalenv['update_progress'] = ri.rternalize(task.update_progress)
     ro.globalenv['params'] = ListVector(params)
 
     with open(script_path, 'r') as script:
         ro.r(script.read())
+
+def _symlink_file_source(file_source: FileSource, dir: str) -> str:
+    new_filepath = os.path.join(dir, file_source.original_filename)
+    os.symlink(file_source.filepath, new_filepath)
+    return new_filepath

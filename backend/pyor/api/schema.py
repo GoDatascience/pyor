@@ -12,7 +12,6 @@
 
 import copy
 
-# MongoEngine Fields
 from typing import Type, Dict
 
 from mongoengine import (StringField, IntField, FloatField, BooleanField,
@@ -159,8 +158,6 @@ class SchemaMapper(object):
                 fdict['max'] = field.max_value
             if getattr(field, 'min_value', None) is not None:
                 fdict['min'] = field.min_value
-            if getattr(field, 'api_readonly', None) is not None:
-                fdict['readonly'] = field.api_readonly
 
             # special cases
             if best_matching_cls is ReferenceField:
@@ -178,8 +175,11 @@ class SchemaMapper(object):
                     }
 
         elif best_matching_cls is DynamicField:
-            fdict['type'] = 'object'
+            fdict['type'] = 'dict'
             fdict['allow_unknown'] = True
+
+        if getattr(field, 'api_readonly', None) is not None:
+            fdict['readonly'] = field.api_readonly
 
         return fdict
 
@@ -196,12 +196,18 @@ class SchemaMapper(object):
                 subresource = field.document_type.__name__
                 if lowercase:
                     subresource = subresource.lower()
-                if registrations[field.document_type]:
-                    subresource_url = registrations[field.document_type].get("url", subresource)
+                if field.document_type in registrations:
+                    resource_settings = registrations[field.document_type]
+                    subresource_url = resource_settings.get("url", subresource)
+                    subresource_datasource = resource_settings.get("datasource", {"source": subresource})
                 else:
                     subresource_url = subresource
+                    subresource_datasource = {"source": subresource}
+
                 # FIXME what if id is of other type?
                 _url = '%s/<regex("[a-f0-9]{24}"):%s>/%s'
                 subresource_settings['url'] = _url % (subresource_url, fname,
                                                       resource_name+"s")
+                subresource_settings['datasource'] = subresource_datasource
+
                 yield subresource+resource_name, subresource_settings
