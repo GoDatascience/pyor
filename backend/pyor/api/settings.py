@@ -9,17 +9,17 @@ SETTINGS = {
     "MONGO_DBNAME": os.environ["MONGO_DBNAME"],
 
     "URL_PREFIX": "api",
-    "API_VERSION": "v1",
 
     "PAGINATION_DEFAULT": 10,
 
     "LAST_UPDATED": LAST_UPDATED,
     "DATE_CREATED": DATE_CREATED,
     "ETAG": ETAG,
-    "DATE_FORMAT": "%Y-%m-%dT%H:%M:%S.%f%z",
+    "DATE_FORMAT": "%Y-%m-%dT%H:%M:%S.%fZ",
 
     "RESOURCE_METHODS": ["GET", "POST"],
     "ITEM_METHODS": ["GET", "PUT", "DELETE"],
+    "ENFORCE_IF_MATCH": False,
 
     "RETURN_MEDIA_AS_BASE64_STRING": False,
     "RETURN_MEDIA_AS_URL": True,
