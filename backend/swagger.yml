@@ -28,9 +28,7 @@ paths:
         '200':
           description: An array of queues
           schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Queue"
+            "$ref": "#/definitions/QueueCollection"
       tags:
       - Queue
     post:
@@ -65,6 +63,7 @@ paths:
         '200':
           description: Queue document replaced successfully
       parameters:
+      - "$ref": "#/parameters/if_match"
       - "$ref": "#/parameters/Queue__id"
       - in: body
         name: Queue
@@ -84,6 +83,7 @@ paths:
         '204':
           description: Queue document deleted successfully
       parameters:
+      - "$ref": "#/parameters/if_match"
       - "$ref": "#/parameters/Queue__id"
       - in: header
         name: If-Match
@@ -106,9 +106,7 @@ paths:
         '200':
           description: An array of workers
           schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Worker"
+            "$ref": "#/definitions/WorkerCollection"
       tags:
       - Worker
     post:
@@ -143,6 +141,7 @@ paths:
         '200':
           description: Worker document replaced successfully
       parameters:
+      - "$ref": "#/parameters/if_match"
       - "$ref": "#/parameters/Worker__id"
       - in: body
         name: Worker
@@ -162,6 +161,7 @@ paths:
         '204':
           description: Worker document deleted successfully
       parameters:
+      - "$ref": "#/parameters/if_match"
       - "$ref": "#/parameters/Worker__id"
       - in: header
         name: If-Match
@@ -184,11 +184,9 @@ paths:
         '200':
           description: An array of taskfiles
           schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Taskfile"
+            "$ref": "#/definitions/TaskFilesCollection"
       tags:
-      - Taskfile
+      - Taskfiles
     post:
       summary: Uploads script and auxiliar files, creating an TaskFiles register
       consumes:
@@ -208,34 +206,35 @@ paths:
         '201':
           description: operation has been successful
       tags:
-      - Taskfile
+      - Taskfiles
   "/taskfiles/{taskfileId}":
     get:
-      summary: Retrieves a Taskfile document
+      summary: Retrieves a Taskfiles document
       responses:
         '200':
-          description: Taskfile document fetched successfully
+          description: Taskfiles document fetched successfully
           schema:
-            "$ref": "#/definitions/Taskfile"
+            "$ref": "#/definitions/Taskfiles"
       parameters:
-      - "$ref": "#/parameters/Taskfile__id"
+      - "$ref": "#/parameters/Taskfiles__id"
       - "$ref": "#/parameters/embedded"
       tags:
-      - Taskfile
+      - Taskfiles
     delete:
-      summary: Deletes a Taskfile document
+      summary: Deletes a Taskfiles document
       responses:
         '204':
-          description: Taskfile document deleted successfully
+          description: Taskfiles document deleted successfully
       parameters:
-      - "$ref": "#/parameters/Taskfile__id"
+      - "$ref": "#/parameters/if_match"
+      - "$ref": "#/parameters/Taskfiles__id"
       - in: header
         name: If-Match
         description: Current value of the _etag field
         required: true
         type: string
       tags:
-      - Taskfile
+      - Taskfiles
   "/tasks":
     get:
       summary: Retrieves one or more tasks
@@ -250,9 +249,7 @@ paths:
         '200':
           description: An array of tasks
           schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Task"
+            "$ref": "#/definitions/TaskCollection"
       tags:
       - Task
     post:
@@ -287,6 +284,7 @@ paths:
         '200':
           description: Task document replaced successfully
       parameters:
+      - "$ref": "#/parameters/if_match"
       - "$ref": "#/parameters/Task__id"
       - in: body
         name: Task
@@ -306,6 +304,7 @@ paths:
         '204':
           description: Task document deleted successfully
       parameters:
+      - "$ref": "#/parameters/if_match"
       - "$ref": "#/parameters/Task__id"
       - in: header
         name: If-Match
@@ -318,7 +317,7 @@ paths:
     get:
       summary: Retrieves one or more tasks
       parameters:
-      - "$ref": "#/parameters/Taskfile__id"
+      - "$ref": "#/parameters/Taskfiles__id"
       - "$ref": "#/parameters/page"
       - "$ref": "#/parameters/max_results"
       - "$ref": "#/parameters/embedded"
@@ -329,9 +328,7 @@ paths:
         '200':
           description: An array of tasks
           schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Task"
+            "$ref": "#/definitions/TaskCollection"
       tags:
       - Task
   "/experiments":
@@ -348,9 +345,7 @@ paths:
         '200':
           description: An array of experiments
           schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Experiment"
+            "$ref": "#/definitions/ExperimentCollection"
       tags:
       - Experiment
     post:
@@ -385,6 +380,7 @@ paths:
         '204':
           description: Experiment document deleted successfully
       parameters:
+      - "$ref": "#/parameters/if_match"
       - "$ref": "#/parameters/Experiment__id"
       - in: header
         name: If-Match
@@ -408,9 +404,7 @@ paths:
         '200':
           description: An array of experiments
           schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Experiment"
+            "$ref": "#/definitions/ExperimentCollection"
       tags:
       - Experiment
   /queues/{queueId}/experiments:
@@ -428,9 +422,7 @@ paths:
         '200':
           description: An array of experiments
           schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Experiment"
+            "$ref": "#/definitions/ExperimentCollection"
       tags:
       - Experiment
 definitions:
@@ -441,6 +433,17 @@ definitions:
         type: string
       _id:
         "$ref": "#/definitions/Queue__id"
+      _updated:
+        readOnly: true
+        type: string
+        format: date-time
+      _created:
+        readOnly: true
+        type: string
+        format: date-time
+      _etag:
+        readOnly: true
+        type: string
     required:
     - name
   Worker:
@@ -459,9 +462,20 @@ definitions:
       _id:
         type: string
         format: objectid
+      _updated:
+        readOnly: true
+        type: string
+        format: date-time
+      _created:
+        readOnly: true
+        type: string
+        format: date-time
+      _etag:
+        readOnly: true
+        type: string
     required:
     - name
-  Taskfile:
+  Taskfiles:
     type: object
     properties:
       script_file:
@@ -473,14 +487,25 @@ definitions:
           type: string
           description: "File's URL"
       _id:
-        "$ref": "#/definitions/Taskfile__id"
+        "$ref": "#/definitions/Taskfiles__id"
+      _updated:
+        readOnly: true
+        type: string
+        format: date-time
+      _created:
+        readOnly: true
+        type: string
+        format: date-time
+      _etag:
+        readOnly: true
+        type: string
   Task:
     type: object
     properties:
       name:
         type: string
       files:
-        "$ref": "#/definitions/Taskfile__id"
+        "$ref": "#/definitions/Taskfiles__id"
       param_definitions:
         type: array
         items:
@@ -500,6 +525,17 @@ definitions:
           - type
       _id:
         "$ref": "#/definitions/Task__id"
+      _updated:
+        readOnly: true
+        type: string
+        format: date-time
+      _created:
+        readOnly: true
+        type: string
+        format: date-time
+      _etag:
+        readOnly: true
+        type: string
     required:
     - name
   Experiment:
@@ -557,10 +593,21 @@ definitions:
       _id:
         type: string
         format: objectid
+      _updated:
+        readOnly: true
+        type: string
+        format: date-time
+      _created:
+        readOnly: true
+        type: string
+        format: date-time
+      _etag:
+        readOnly: true
+        type: string
     required:
     - task
     - queue
-  Taskfile__id:
+  Taskfiles__id:
     type: string
     format: objectid
   Task__id:
@@ -569,6 +616,86 @@ definitions:
   Queue__id:
     type: string
     format: objectid
+  QueueCollection:
+    type: object
+    properties:
+      _items:
+        type: array
+        items:
+          "$ref": "#/definitions/Queue"
+      _meta:
+        type: object
+        properties:
+          page:
+            type: integer
+          max_results:
+            type: integer
+          total:
+            type: integer
+  WorkerCollection:
+    type: object
+    properties:
+      _items:
+        type: array
+        items:
+          "$ref": "#/definitions/Worker"
+      _meta:
+        type: object
+        properties:
+          page:
+            type: integer
+          max_results:
+            type: integer
+          total:
+            type: integer
+  TaskFilesCollection:
+    type: object
+    properties:
+      _items:
+        type: array
+        items:
+          "$ref": "#/definitions/Taskfiles"
+      _meta:
+        type: object
+        properties:
+          page:
+            type: integer
+          max_results:
+            type: integer
+          total:
+            type: integer
+  TaskCollection:
+    type: object
+    properties:
+      _items:
+        type: array
+        items:
+          "$ref": "#/definitions/Task"
+      _meta:
+        type: object
+        properties:
+          page:
+            type: integer
+          max_results:
+            type: integer
+          total:
+            type: integer
+  ExperimentCollection:
+    type: object
+    properties:
+      _items:
+        type: array
+        items:
+          "$ref": "#/definitions/Experiment"
+      _meta:
+        type: object
+        properties:
+          page:
+            type: integer
+          max_results:
+            type: integer
+          total:
+            type: integer
 parameters:
   Queue__id:
     in: path
@@ -584,7 +711,7 @@ parameters:
     description: ''
     type: string
     format: objectid
-  Taskfile__id:
+  Taskfiles__id:
     in: path
     name: taskfileId
     required: true
@@ -635,9 +762,14 @@ parameters:
     name: projection
     type: string
     description: 'Decided which fields should be included or excluded from the response. Must be provided in the form of {"field1": 1, "field2": 1}. See http://python-eve.org/features.html#projections for more information.'
+  if_match:
+    in: header
+    name: 'If-Match'
+    type: string
+    description: Should include the last _etag value to garantee that no concurrent update happened.
 tags:
 - name: Queue
 - name: Worker
-- name: Taskfile
+- name: Taskfiles
 - name: Task
 - name: Experiment
