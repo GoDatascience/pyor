@@ -60,7 +60,7 @@ class TaskFiles(Document):
 
 class Task(Document):
     name = StringField(required=True, unique=True)
-    files = ReferenceField(TaskFiles, db_field="files_id")
+    files = ReferenceField(TaskFiles)
     param_definitions = ListField(EmbeddedDocumentField(ParamDefinition))
 
     @property
@@ -69,9 +69,9 @@ class Task(Document):
 
 
 class Experiment(Document):
-    task = ReferenceField(Task, required=True, db_field="task_id")
+    task = ReferenceField(Task, required=True)
     params = DictField()
-    queue = ReferenceField(Queue, required=True, db_field="queue_id")
+    queue = ReferenceField(Queue, required=True)
     status = StringField(default=PENDING, api_readonly=True)
     result = DynamicField(api_readonly=True)
     result_files = ListField(ReferenceField(FileSource), api_readonly=True)
