@@ -9,7 +9,6 @@ SETTINGS = {
     "MONGO_DBNAME": os.environ["MONGO_DBNAME"],
 
     "URL_PREFIX": "api",
-    "API_VERSION": "v1",
 
     "PAGINATION_DEFAULT": 10,
 
