@@ -29,6 +29,8 @@ paths:
           description: An array of queues
           schema:
             "$ref": "#/definitions/QueueCollection"
+        '400':
+          "$ref": "#/responses/BadRequest"
       tags:
       - Queue
     post:
@@ -41,7 +43,13 @@ paths:
           "$ref": "#/definitions/Queue"
       responses:
         '201':
-          description: operation has been successful
+          "$ref": "#/responses/Created"
+        '400':
+          "$ref": "#/responses/BadRequest"
+        '404':
+          "$ref": "#/responses/NotFound"
+        '422':
+          "$ref": "#/responses/ValidationError"
       tags:
       - Queue
   "/queues/{queueId}":
@@ -52,6 +60,10 @@ paths:
           description: Queue document fetched successfully
           schema:
             "$ref": "#/definitions/Queue"
+        '400':
+          "$ref": "#/responses/BadRequest"
+        '404':
+          "$ref": "#/responses/NotFound"
       parameters:
       - "$ref": "#/parameters/Queue__id"
       - "$ref": "#/parameters/embedded"
@@ -61,7 +73,13 @@ paths:
       summary: Replaces a Queue document
       responses:
         '200':
-          description: Queue document replaced successfully
+          "$ref": "#/responses/Updated"
+        '400':
+          "$ref": "#/responses/BadRequest"
+        '404':
+          "$ref": "#/responses/NotFound"
+        '422':
+          "$ref": "#/responses/ValidationError"
       parameters:
       - "$ref": "#/parameters/if_match"
       - "$ref": "#/parameters/Queue__id"
@@ -70,11 +88,6 @@ paths:
         required: true
         schema:
           "$ref": "#/definitions/Queue"
-      - in: header
-        name: If-Match
-        description: Current value of the _etag field
-        required: true
-        type: string
       tags:
       - Queue
     delete:
@@ -82,14 +95,11 @@ paths:
       responses:
         '204':
           description: Queue document deleted successfully
+        '404':
+          "$ref": "#/responses/NotFound"
       parameters:
       - "$ref": "#/parameters/if_match"
       - "$ref": "#/parameters/Queue__id"
-      - in: header
-        name: If-Match
-        description: Current value of the _etag field
-        required: true
-        type: string
       tags:
       - Queue
   "/workers":
@@ -107,6 +117,8 @@ paths:
           description: An array of workers
           schema:
             "$ref": "#/definitions/WorkerCollection"
+        '400':
+          "$ref": "#/responses/BadRequest"
       tags:
       - Worker
     post:
@@ -119,7 +131,13 @@ paths:
           "$ref": "#/definitions/Worker"
       responses:
         '201':
-          description: operation has been successful
+          "$ref": "#/responses/Created"
+        '400':
+          "$ref": "#/responses/BadRequest"
+        '404':
+          "$ref": "#/responses/NotFound"
+        '422':
+          "$ref": "#/responses/ValidationError"
       tags:
       - Worker
   "/workers/{workerId}":
@@ -130,6 +148,10 @@ paths:
           description: Worker document fetched successfully
           schema:
             "$ref": "#/definitions/Worker"
+        '400':
+          "$ref": "#/responses/BadRequest"
+        '404':
+          "$ref": "#/responses/NotFound"
       parameters:
       - "$ref": "#/parameters/Worker__id"
       - "$ref": "#/parameters/embedded"
@@ -139,7 +161,13 @@ paths:
       summary: Replaces a Worker document
       responses:
         '200':
-          description: Worker document replaced successfully
+          "$ref": "#/responses/Updated"
+        '400':
+          "$ref": "#/responses/BadRequest"
+        '404':
+          "$ref": "#/responses/NotFound"
+        '422':
+          "$ref": "#/responses/ValidationError"
       parameters:
       - "$ref": "#/parameters/if_match"
       - "$ref": "#/parameters/Worker__id"
@@ -148,11 +176,6 @@ paths:
         required: true
         schema:
           "$ref": "#/definitions/Worker"
-      - in: header
-        name: If-Match
-        description: Current value of the _etag field
-        required: true
-        type: string
       tags:
       - Worker
     delete:
@@ -160,14 +183,11 @@ paths:
       responses:
         '204':
           description: Worker document deleted successfully
+        '404':
+          "$ref": "#/responses/NotFound"
       parameters:
       - "$ref": "#/parameters/if_match"
       - "$ref": "#/parameters/Worker__id"
-      - in: header
-        name: If-Match
-        description: Current value of the _etag field
-        required: true
-        type: string
       tags:
       - Worker
   "/taskfiles":
@@ -185,6 +205,8 @@ paths:
           description: An array of taskfiles
           schema:
             "$ref": "#/definitions/TaskFilesCollection"
+        '400':
+          "$ref": "#/responses/BadRequest"
       tags:
       - Taskfiles
     post:
@@ -204,7 +226,13 @@ paths:
         description: Auxiliar files (may upload multiple files with the same field)
       responses:
         '201':
-          description: operation has been successful
+          "$ref": "#/responses/Created"
+        '400':
+          "$ref": "#/responses/BadRequest"
+        '404':
+          "$ref": "#/responses/NotFound"
+        '422':
+          "$ref": "#/responses/ValidationError"
       tags:
       - Taskfiles
   "/taskfiles/{taskfileId}":
@@ -215,6 +243,10 @@ paths:
           description: Taskfiles document fetched successfully
           schema:
             "$ref": "#/definitions/Taskfiles"
+        '400':
+          "$ref": "#/responses/BadRequest"
+        '404':
+          "$ref": "#/responses/NotFound"
       parameters:
       - "$ref": "#/parameters/Taskfiles__id"
       - "$ref": "#/parameters/embedded"
@@ -225,14 +257,11 @@ paths:
       responses:
         '204':
           description: Taskfiles document deleted successfully
+        '404':
+          "$ref": "#/responses/NotFound"
       parameters:
       - "$ref": "#/parameters/if_match"
       - "$ref": "#/parameters/Taskfiles__id"
-      - in: header
-        name: If-Match
-        description: Current value of the _etag field
-        required: true
-        type: string
       tags:
       - Taskfiles
   "/tasks":
@@ -250,6 +279,8 @@ paths:
           description: An array of tasks
           schema:
             "$ref": "#/definitions/TaskCollection"
+        '400':
+          "$ref": "#/responses/BadRequest"
       tags:
       - Task
     post:
@@ -262,7 +293,13 @@ paths:
           "$ref": "#/definitions/Task"
       responses:
         '201':
-          description: operation has been successful
+          "$ref": "#/responses/Created"
+        '400':
+          "$ref": "#/responses/BadRequest"
+        '404':
+          "$ref": "#/responses/NotFound"
+        '422':
+          "$ref": "#/responses/ValidationError"
       tags:
       - Task
   "/tasks/{taskId}":
@@ -273,6 +310,10 @@ paths:
           description: Task document fetched successfully
           schema:
             "$ref": "#/definitions/Task"
+        '400':
+          "$ref": "#/responses/BadRequest"
+        '404':
+          "$ref": "#/responses/NotFound"
       parameters:
       - "$ref": "#/parameters/Task__id"
       - "$ref": "#/parameters/embedded"
@@ -282,7 +323,13 @@ paths:
       summary: Replaces a Task document
       responses:
         '200':
-          description: Task document replaced successfully
+          "$ref": "#/responses/Updated"
+        '400':
+          "$ref": "#/responses/BadRequest"
+        '404':
+          "$ref": "#/responses/NotFound"
+        '422':
+          "$ref": "#/responses/ValidationError"
       parameters:
       - "$ref": "#/parameters/if_match"
       - "$ref": "#/parameters/Task__id"
@@ -291,11 +338,6 @@ paths:
         required: true
         schema:
           "$ref": "#/definitions/Task"
-      - in: header
-        name: If-Match
-        description: Current value of the _etag field
-        required: true
-        type: string
       tags:
       - Task
     delete:
@@ -303,14 +345,11 @@ paths:
       responses:
         '204':
           description: Task document deleted successfully
+        '404':
+          "$ref": "#/responses/NotFound"
       parameters:
       - "$ref": "#/parameters/if_match"
       - "$ref": "#/parameters/Task__id"
-      - in: header
-        name: If-Match
-        description: Current value of the _etag field
-        required: true
-        type: string
       tags:
       - Task
   /taskfiles/{taskfileId}/tasks:
@@ -329,6 +368,10 @@ paths:
           description: An array of tasks
           schema:
             "$ref": "#/definitions/TaskCollection"
+        '400':
+          "$ref": "#/responses/BadRequest"
+        '404':
+          "$ref": "#/responses/NotFound"
       tags:
       - Task
   "/experiments":
@@ -346,6 +389,8 @@ paths:
           description: An array of experiments
           schema:
             "$ref": "#/definitions/ExperimentCollection"
+        '400':
+          "$ref": "#/responses/BadRequest"
       tags:
       - Experiment
     post:
@@ -358,7 +403,13 @@ paths:
           "$ref": "#/definitions/Experiment"
       responses:
         '201':
-          description: operation has been successful
+          "$ref": "#/responses/Created"
+        '400':
+          "$ref": "#/responses/BadRequest"
+        '404':
+          "$ref": "#/responses/NotFound"
+        '422':
+          "$ref": "#/responses/ValidationError"
       tags:
       - Experiment
   "/experiments/{experimentId}":
@@ -369,6 +420,10 @@ paths:
           description: Experiment document fetched successfully
           schema:
             "$ref": "#/definitions/Experiment"
+        '400':
+          "$ref": "#/responses/BadRequest"
+        '404':
+          "$ref": "#/responses/NotFound"
       parameters:
       - "$ref": "#/parameters/Experiment__id"
       - "$ref": "#/parameters/embedded"
@@ -379,14 +434,11 @@ paths:
       responses:
         '204':
           description: Experiment document deleted successfully
+        '404':
+          "$ref": "#/responses/NotFound"
       parameters:
       - "$ref": "#/parameters/if_match"
       - "$ref": "#/parameters/Experiment__id"
-      - in: header
-        name: If-Match
-        description: Current value of the _etag field
-        required: true
-        type: string
       tags:
       - Experiment
   /tasks/{taskId}/experiments:
@@ -405,6 +457,10 @@ paths:
           description: An array of experiments
           schema:
             "$ref": "#/definitions/ExperimentCollection"
+        '400':
+          "$ref": "#/responses/BadRequest"
+        '404':
+          "$ref": "#/responses/NotFound"
       tags:
       - Experiment
   /queues/{queueId}/experiments:
@@ -423,8 +479,33 @@ paths:
           description: An array of experiments
           schema:
             "$ref": "#/definitions/ExperimentCollection"
+        '400':
+          "$ref": "#/responses/BadRequest"
+        '404':
+          "$ref": "#/responses/NotFound"
       tags:
       - Experiment
+responses:
+  Created:
+    description: The resource has been created successfully
+    schema:
+      "$ref": "#/definitions/ApiResponse"
+  Updated:
+    description: The resource has been updated successfully
+    schema:
+      "$ref": "#/definitions/ApiResponse"
+  ValidationError:
+    description: There are validation errors in the submitted resource
+    schema:
+      "$ref": "#/definitions/ApiResponse"
+  NotFound:
+    description: The specified resource was not found
+    schema:
+      "$ref": "#/definitions/ApiResponse"
+  BadRequest:
+    description: Bad request
+    schema:
+      "$ref": "#/definitions/ApiResponse"
 definitions:
   Queue:
     type: object
@@ -696,6 +777,54 @@ definitions:
             type: integer
           total:
             type: integer
+  Issues:
+    type: object
+    additionalProperties:
+      type: string
+      description: Pair of field name and error message.
+  Status:
+    type: string
+    enum:
+      - OK
+      - ERR
+  ApiResponse:
+    type: object
+    properties:
+      _status:
+        "$ref": "#/definitions/Status"
+      _issues:
+        "$ref": "#/definitions/Issues"
+      _error:
+        type: object
+        properties:
+          code:
+            type: integer
+          message:
+            type: string
+      _created:
+        type: string
+        format: date-time
+        description: Time when the resource was created. Only present in POST operations.
+      _updated:
+        type: string
+        format: date-time
+        description: Time when the resource was updated. Only present in PUT, PATCH and DELETE operations.
+      _id:
+        type: string
+        format: objectid
+        description: Only present if a resource has been created or updated.
+      _etag:
+        type: string
+        description: Only present if a resource has been created or updated.
+      _items:
+        type: object
+        properties:
+          _status:
+            "$ref": "#/definitions/Status"
+          _issues:
+            "$ref": "#/definitions/Issues"
+        description: Responses for each resource included in the BULK INSERT.
+
 parameters:
   Queue__id:
     in: path
@@ -766,7 +895,7 @@ parameters:
     in: header
     name: 'If-Match'
     type: string
-    description: Should include the last _etag value to garantee that no concurrent update happened.
+    description: Current value of the _etag field
 tags:
 - name: Queue
 - name: Worker
