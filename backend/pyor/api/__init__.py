@@ -20,7 +20,10 @@ register_resource({Queue: {"url": "queues"},
                        "url": "taskfiles",
                        "item_methods": ["GET", "DELETE"]
                    },
-                   Task: {"url": "tasks"},
+                   Task: {
+                       "url": "tasks",
+                       "versioning": True
+                   },
                    Experiment: {
                        "url": "experiments",
                        "item_methods": ["GET", "DELETE"]

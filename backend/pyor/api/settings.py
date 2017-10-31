@@ -1,6 +1,6 @@
 import os
 
-from pyor.models import LAST_UPDATED, DATE_CREATED, ETAG
+from pyor.models import LAST_UPDATED, DATE_CREATED, ETAG, VERSION, LATEST_VERSION
 
 SETTINGS = {
     "DEBUG": True if os.environ.get("ENV") == "development" else False,
@@ -15,6 +15,8 @@ SETTINGS = {
     "LAST_UPDATED": LAST_UPDATED,
     "DATE_CREATED": DATE_CREATED,
     "ETAG": ETAG,
+    "VERSION": VERSION,
+    "LATEST_VERSION": LATEST_VERSION,
     "DATE_FORMAT": "%Y-%m-%dT%H:%M:%S.%fZ",
 
     "RESOURCE_METHODS": ["GET", "POST"],

@@ -312,6 +312,10 @@ paths:
       parameters:
       - "$ref": "#/parameters/Task__id"
       - "$ref": "#/parameters/embedded"
+      - in: query
+        name: version
+        type: string
+        description: "Desired version of the document. Defaults to the latest version. It's also possible to ask for all versions with version=all and for the diffs with version=diffs. See http://python-eve.org/features.html#document-versioning for more information."
       tags:
       - Task
     put:
@@ -611,6 +615,14 @@ definitions:
       _etag:
         readOnly: true
         type: string
+      _version:
+        readOnly: true
+        type: integer
+        description: Document's version
+      _latest_version:
+        readOnly: true
+        type: integer
+        description: Document's latest version
     required:
     - name
   Experiment:
@@ -809,6 +821,9 @@ definitions:
         description: Only present if a resource has been created or updated.
       _etag:
         type: string
+        description: Only present if a resource has been created or updated.
+      _version:
+        type: integer
         description: Only present if a resource has been created or updated.
       _items:
         type: object
