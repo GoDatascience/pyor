@@ -53,14 +53,14 @@ class ParamDefinition(EmbeddedDocument):
     type = StringField(required=True, choices=("text", "number", "date", "boolean"))
 
 
-class TaskFiles(Document):
-    script_file = ReferenceField(FileSource)
-    auxiliar_files = ListField(ReferenceField(FileSource))
+class TaskFile(Document):
+    file = ReferenceField(FileSource)
 
 
 class Task(Document):
     name = StringField(required=True, unique=True)
-    files = ReferenceField(TaskFiles)
+    script_file = ReferenceField(TaskFile, required=True)
+    auxiliar_files = ListField(ReferenceField(TaskFile))
     param_definitions = ListField(EmbeddedDocumentField(ParamDefinition))
 
     @property
@@ -171,7 +171,7 @@ def patch_model_class(model_cls: Type[Document]):
 # Needed because the worker process doesn't call the pyor.api.mapper.register_resource()
 patch_model_class(Queue)
 patch_model_class(Worker)
-patch_model_class(TaskFiles)
+patch_model_class(TaskFile)
 patch_model_class(Task)
 patch_model_class(Experiment)
 

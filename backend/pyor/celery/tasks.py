@@ -15,7 +15,7 @@ from celery.utils.log import get_task_logger
 
 from pyor.celery import app
 from pyor.celery.states import PROGRESS
-from pyor.models import Experiment, Task, TaskFiles, FileSource
+from pyor.models import Experiment, Task, TaskFile, FileSource
 
 __all__ = ["experiment_task"]
 
@@ -33,17 +33,16 @@ class BaseTask(celery.Task):
 @app.task(base=BaseTask, bind=True)
 def experiment_task(self: BaseTask, id: str):
     experiment: Experiment = Experiment.objects.get(id=id)
-    files: TaskFiles = experiment.task.files
 
     experiment_dir: str = os.path.join(experiment.task.dirpath, "experiments", str(experiment.id))
     logger.info("Creating experiment dir and changing workdir: {}".format(experiment_dir))
     pathlib.Path(experiment_dir).mkdir(parents=True, exist_ok=True)
     os.chdir(experiment_dir)
 
-    script_path = _symlink_file_source(files.script_file, experiment_dir)
+    script_path = _symlink_file_source(experiment.task.script_file.file, experiment_dir)
     logger.info("Symlink created: {}".format(script_path))
-    for auxiliar_file in files.auxiliar_files:
-        symlink_path = _symlink_file_source(auxiliar_file, experiment_dir)
+    for auxiliar_file in experiment.task.auxiliar_files:
+        symlink_path = _symlink_file_source(auxiliar_file.file, experiment_dir)
         logger.info("Symlink created: {}".format(symlink_path))
 
     if script_path.lower().endswith(".py"):
