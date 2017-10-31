@@ -208,22 +208,17 @@ paths:
         '400':
           "$ref": "#/responses/BadRequest"
       tags:
-      - Taskfiles
+      - TaskFile
     post:
-      summary: Uploads script and auxiliar files, creating an TaskFiles register
+      summary: Uploads script and auxiliar files, creating an TaskFile register
       consumes:
         - multipart/form-data
       parameters:
       - in: formData
-        name: script_file
+        name: data
         required: true
         type: file
-        description: Python or R script
-      - in: formData
-        name: auxiliar_files
-        required: false
-        type: file
-        description: Auxiliar files (may upload multiple files with the same field)
+        description: File
       responses:
         '201':
           "$ref": "#/responses/Created"
@@ -234,36 +229,36 @@ paths:
         '422':
           "$ref": "#/responses/ValidationError"
       tags:
-      - Taskfiles
+      - TaskFile
   "/taskfiles/{taskfileId}":
     get:
-      summary: Retrieves a Taskfiles document
+      summary: Retrieves a TaskFile document
       responses:
         '200':
-          description: Taskfiles document fetched successfully
+          description: TaskFile document fetched successfully
           schema:
-            "$ref": "#/definitions/Taskfiles"
+            "$ref": "#/definitions/TaskFile"
         '400':
           "$ref": "#/responses/BadRequest"
         '404':
           "$ref": "#/responses/NotFound"
       parameters:
-      - "$ref": "#/parameters/Taskfiles__id"
+      - "$ref": "#/parameters/TaskFile__id"
       - "$ref": "#/parameters/embedded"
       tags:
-      - Taskfiles
+      - TaskFile
     delete:
-      summary: Deletes a Taskfiles document
+      summary: Deletes a TaskFile document
       responses:
         '204':
-          description: Taskfiles document deleted successfully
+          description: TaskFile document deleted successfully
         '404':
           "$ref": "#/responses/NotFound"
       parameters:
       - "$ref": "#/parameters/if_match"
-      - "$ref": "#/parameters/Taskfiles__id"
+      - "$ref": "#/parameters/TaskFile__id"
       tags:
-      - Taskfiles
+      - TaskFile
   "/tasks":
     get:
       summary: Retrieves one or more tasks
@@ -317,6 +312,10 @@ paths:
       parameters:
       - "$ref": "#/parameters/Task__id"
       - "$ref": "#/parameters/embedded"
+      - in: query
+        name: version
+        type: string
+        description: "Desired version of the document. Defaults to the latest version. It's also possible to ask for all versions with version=all and for the diffs with version=diffs. See http://python-eve.org/features.html#document-versioning for more information."
       tags:
       - Task
     put:
@@ -356,7 +355,7 @@ paths:
     get:
       summary: Retrieves one or more tasks
       parameters:
-      - "$ref": "#/parameters/Taskfiles__id"
+      - "$ref": "#/parameters/TaskFile__id"
       - "$ref": "#/parameters/page"
       - "$ref": "#/parameters/max_results"
       - "$ref": "#/parameters/embedded"
@@ -543,6 +542,7 @@ definitions:
       _id:
         type: string
         format: objectid
+        readOnly: true
       _updated:
         readOnly: true
         type: string
@@ -556,19 +556,31 @@ definitions:
         type: string
     required:
     - name
-  Taskfiles:
+  TaskFile:
     type: object
     properties:
-      script_file:
-        type: string
-        description: "File's URL"
-      auxiliar_files:
-        type: array
-        items:
-          type: string
-          description: "File's URL"
+      data:
+        type: object
+        properties:
+          file:
+            type: string
+            description: "File's URL"
+          filename:
+            type: string
+          original_filename:
+            type: string
+          content_type:
+            type: string
+          length:
+            type: integer
+            description: Length in bytes
+          md5:
+            type: string
+          upload_date:
+            type: string
+            format: date-time
       _id:
-        "$ref": "#/definitions/Taskfiles__id"
+        "$ref": "#/definitions/TaskFile__id"
       _updated:
         readOnly: true
         type: string
@@ -585,8 +597,12 @@ definitions:
     properties:
       name:
         type: string
-      files:
-        "$ref": "#/definitions/Taskfiles__id"
+      script_file:
+        "$ref": "#/definitions/TaskFile__id"
+      auxiliar_files:
+        type: array
+        items:
+          "$ref": "#/definitions/TaskFile__id"
       param_definitions:
         type: array
         items:
@@ -617,6 +633,14 @@ definitions:
       _etag:
         readOnly: true
         type: string
+      _version:
+        readOnly: true
+        type: integer
+        description: Document's version
+      _latest_version:
+        readOnly: true
+        type: integer
+        description: Document's latest version
     required:
     - name
   Experiment:
@@ -674,6 +698,7 @@ definitions:
       _id:
         type: string
         format: objectid
+        readOnly: true
       _updated:
         readOnly: true
         type: string
@@ -688,15 +713,18 @@ definitions:
     required:
     - task
     - queue
-  Taskfiles__id:
+  TaskFile__id:
     type: string
     format: objectid
+    readOnly: true
   Task__id:
     type: string
     format: objectid
+    readOnly: true
   Queue__id:
     type: string
     format: objectid
+    readOnly: true
   QueueCollection:
     type: object
     properties:
@@ -735,7 +763,7 @@ definitions:
       _items:
         type: array
         items:
-          "$ref": "#/definitions/Taskfiles"
+          "$ref": "#/definitions/TaskFile"
       _meta:
         type: object
         properties:
@@ -816,6 +844,9 @@ definitions:
       _etag:
         type: string
         description: Only present if a resource has been created or updated.
+      _version:
+        type: integer
+        description: Only present if a resource has been created or updated.
       _items:
         type: object
         properties:
@@ -840,7 +871,7 @@ parameters:
     description: ''
     type: string
     format: objectid
-  Taskfiles__id:
+  TaskFile__id:
     in: path
     name: taskfileId
     required: true
@@ -899,6 +930,6 @@ parameters:
 tags:
 - name: Queue
 - name: Worker
-- name: Taskfiles
+- name: TaskFile
 - name: Task
 - name: Experiment

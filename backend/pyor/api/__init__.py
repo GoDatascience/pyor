@@ -4,7 +4,7 @@ from eve_swagger import swagger, add_documentation
 from flask_cors.extension import CORS
 
 from pyor.api.media import PyorMediaStorage
-from pyor.models import Queue, Worker, TaskFiles, Task, Experiment
+from pyor.models import Queue, Worker, TaskFile, Task, Experiment
 from pyor.api.mapper import register_resource
 
 from pyor.api.settings import SETTINGS
@@ -16,11 +16,14 @@ CORS(app)
 
 register_resource({Queue: {"url": "queues"},
                    Worker: {"url": "workers"},
-                   TaskFiles: {
+                   TaskFile: {
                        "url": "taskfiles",
                        "item_methods": ["GET", "DELETE"]
                    },
-                   Task: {"url": "tasks"},
+                   Task: {
+                       "url": "tasks",
+                       "versioning": True
+                   },
                    Experiment: {
                        "url": "experiments",
                        "item_methods": ["GET", "DELETE"]
