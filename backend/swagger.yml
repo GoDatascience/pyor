@@ -215,7 +215,7 @@ paths:
         - multipart/form-data
       parameters:
       - in: formData
-        name: file
+        name: data
         required: true
         type: file
         description: File
@@ -542,6 +542,7 @@ definitions:
       _id:
         type: string
         format: objectid
+        readOnly: true
       _updated:
         readOnly: true
         type: string
@@ -558,9 +559,26 @@ definitions:
   TaskFile:
     type: object
     properties:
-      file:
-        type: string
-        description: "File's URL"
+      data:
+        type: object
+        properties:
+          file:
+            type: string
+            description: "File's URL"
+          filename:
+            type: string
+          original_filename:
+            type: string
+          content_type:
+            type: string
+          length:
+            type: integer
+            description: Length in bytes
+          md5:
+            type: string
+          upload_date:
+            type: string
+            format: date-time
       _id:
         "$ref": "#/definitions/TaskFile__id"
       _updated:
@@ -680,6 +698,7 @@ definitions:
       _id:
         type: string
         format: objectid
+        readOnly: true
       _updated:
         readOnly: true
         type: string
@@ -697,12 +716,15 @@ definitions:
   TaskFile__id:
     type: string
     format: objectid
+    readOnly: true
   Task__id:
     type: string
     format: objectid
+    readOnly: true
   Queue__id:
     type: string
     format: objectid
+    readOnly: true
   QueueCollection:
     type: object
     properties:

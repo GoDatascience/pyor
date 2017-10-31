@@ -27,6 +27,7 @@ SETTINGS = {
     "RETURN_MEDIA_AS_URL": True,
     "MEDIA_ENDPOINT": "files",
     "MEDIA_PATH": os.path.join(os.environ["PYOR_DATA"], "files"),
+    "EXTENDED_MEDIA_INFO": ["filename", "original_filename", "content_type", "length", "md5", "upload_date"],
     "AUTO_COLLAPSE_MULTI_KEYS": True,
 
     "XML": False,

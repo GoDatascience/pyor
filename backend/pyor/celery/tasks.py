@@ -39,10 +39,10 @@ def experiment_task(self: BaseTask, id: str):
     pathlib.Path(experiment_dir).mkdir(parents=True, exist_ok=True)
     os.chdir(experiment_dir)
 
-    script_path = _symlink_file_source(experiment.task.script_file.file, experiment_dir)
+    script_path = _symlink_file_source(experiment.task.script_file.data, experiment_dir)
     logger.info("Symlink created: {}".format(script_path))
     for auxiliar_file in experiment.task.auxiliar_files:
-        symlink_path = _symlink_file_source(auxiliar_file.file, experiment_dir)
+        symlink_path = _symlink_file_source(auxiliar_file.data, experiment_dir)
         logger.info("Symlink created: {}".format(symlink_path))
 
     if script_path.lower().endswith(".py"):

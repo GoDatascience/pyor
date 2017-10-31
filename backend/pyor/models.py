@@ -56,7 +56,7 @@ class ParamDefinition(EmbeddedDocument):
 
 
 class TaskFile(Document):
-    file = ReferenceField(FileSource)
+    data = ReferenceField(FileSource)
 
 
 class Task(Document):
