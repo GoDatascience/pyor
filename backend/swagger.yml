@@ -561,25 +561,7 @@ definitions:
     type: object
     properties:
       data:
-        type: object
-        properties:
-          file:
-            type: string
-            description: "File's URL"
-          filename:
-            type: string
-          original_filename:
-            type: string
-          content_type:
-            type: string
-          length:
-            type: integer
-            description: Length in bytes
-          md5:
-            type: string
-          upload_date:
-            type: string
-            format: date-time
+        "$ref": "#/definitions/FileSource"
       _id:
         "$ref": "#/definitions/TaskFile__id"
         readOnly: true
@@ -665,8 +647,7 @@ definitions:
         readOnly: true
         type: array
         items:
-          type: string
-          description: "File's URL"
+          "$ref": "#/definitions/FileSource"
       retry_count:
         readOnly: true
         type: integer
@@ -716,6 +697,26 @@ definitions:
     required:
     - task
     - queue
+  FileSource:
+    type: object
+    properties:
+      file:
+        type: string
+        description: "File's URL"
+      filename:
+        type: string
+      original_filename:
+        type: string
+      content_type:
+        type: string
+      length:
+        type: integer
+        description: Length in bytes
+      md5:
+        type: string
+      upload_date:
+        type: string
+        format: date-time
   TaskFile__id:
     type: string
     format: objectid
