@@ -513,6 +513,7 @@ definitions:
         type: string
       _id:
         "$ref": "#/definitions/Queue__id"
+        readOnly: true
       _updated:
         readOnly: true
         type: string
@@ -581,6 +582,7 @@ definitions:
             format: date-time
       _id:
         "$ref": "#/definitions/TaskFile__id"
+        readOnly: true
       _updated:
         readOnly: true
         type: string
@@ -622,6 +624,7 @@ definitions:
           - type
       _id:
         "$ref": "#/definitions/Task__id"
+        readOnly: true
       _updated:
         readOnly: true
         type: string
@@ -647,7 +650,7 @@ definitions:
     type: object
     properties:
       task:
-        "$ref": "#/definitions/Task__id"
+        "$ref": "#/definitions/Task__ref"
       params:
         type: object
       queue:
@@ -716,15 +719,19 @@ definitions:
   TaskFile__id:
     type: string
     format: objectid
-    readOnly: true
   Task__id:
     type: string
     format: objectid
-    readOnly: true
+  Task__ref:
+    type: object
+    properties:
+      _id:
+        "$ref": "#/definitions/Task__id"
+      _version:
+        type: integer
   Queue__id:
     type: string
     format: objectid
-    readOnly: true
   QueueCollection:
     type: object
     properties:

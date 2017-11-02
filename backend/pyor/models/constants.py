@@ -1,0 +1,8 @@
+ID_FIELD = "_id"
+LAST_UPDATED = "_updated"
+DATE_CREATED = "_created"
+ETAG = "_etag"
+VERSION = "_version"
+LATEST_VERSION = "_latest_version"
+VERSIONS = "_versions"
+VERSION_ID_SUFFIX = "_document"

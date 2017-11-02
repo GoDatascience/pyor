@@ -27,6 +27,8 @@ from eve.exceptions import SchemaException
 from mongoengine.base.fields import BaseField
 
 from pyor.models import FileSource
+from pyor.models import ID_FIELD, VERSION
+from pyor.models.eve_support import VersionedReferenceField
 
 
 class SchemaMapper(object):
@@ -58,6 +60,7 @@ class SchemaMapper(object):
         PolygonField: 'dict',
         BinaryField: 'string',
         ReferenceField: 'objectid',
+        VersionedReferenceField: 'dict',
         FileField: 'media'
 
         # NOT SUPPORTED:
@@ -137,6 +140,8 @@ class SchemaMapper(object):
             # cause allowance of nulls in db. We only want nulls in REST API.
             fdict['nullable'] = True
 
+            if isinstance(field, VersionedReferenceField):
+                fdict['schema'] = {ID_FIELD: {'type': 'objectid'}, VERSION: {'type': 'integer'}}
             if isinstance(field, EmbeddedDocumentField):
                 fdict['schema'] = cls.create_schema(field.document_type)
             if isinstance(field, ListField):
@@ -164,7 +169,7 @@ class SchemaMapper(object):
                 fdict['min'] = field.min_value
 
             # special cases
-            if best_matching_cls is ReferenceField:
+            if best_matching_cls is ReferenceField or best_matching_cls is VersionedReferenceField:
                 if issubclass(field.document_type, FileSource):
                     fdict['type'] = cls._mongoengine_to_cerberus[FileField]
                 else:
@@ -174,8 +179,9 @@ class SchemaMapper(object):
                         resource = resource.lower()
                     fdict['data_relation'] = {
                         'resource': resource,
-                        'field': '_id',
-                        'embeddable': True
+                        'field': ID_FIELD,
+                        'embeddable': True,
+                        'version': best_matching_cls is VersionedReferenceField
                     }
 
         elif best_matching_cls is DynamicField:
