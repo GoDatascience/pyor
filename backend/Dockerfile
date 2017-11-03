@@ -4,7 +4,7 @@ FROM $BASE_IMAGE
 MAINTAINER fernandocamargoti <fernando.camargo.ti@gmail.com>
 
 RUN apt-get update && \
-    apt-get install -y curl build-essential libpng12-dev libffi-dev supervisor && \
+    apt-get install -y curl build-essential libpng12-dev libffi-dev libxrender1 fonts-dejavu gfortran build-essential inkscape jed libsm6 libxext-dev libxrender1 lmodern pandoc python-dev&& \
     apt-get clean && \
     rm -rf /var/tmp /tmp /var/lib/apt/lists/*
 
