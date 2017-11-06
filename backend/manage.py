@@ -33,12 +33,13 @@ def run_flower():
 
 @manager.command
 def runserver():
-    createDefaultQueuesAndWorkers()
+    if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+        createDefaultQueuesAndWorkers()
 
-    for worker in Worker.objects:
-        run_worker(worker)
+        for worker in Worker.objects:
+            run_worker(worker)
 
-    run_flower()
+        run_flower()
 
     # Flask
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT")))

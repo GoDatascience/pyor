@@ -109,3 +109,9 @@ ENV/
 
 #nvidia-docker-compose
 /nvidia-docker-compose.yml
+
+# Dobi
+.dobi/
+
+# Conda env
+.conda-env/

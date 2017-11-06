@@ -16,10 +16,10 @@ In datascience, specially when working with Deep Learning, it's common to run ex
 
 You'll only need [Docker](https://docs.docker.com/engine/installation/) and [Docker Compose](https://docs.docker.com/compose/install/) installed in your computer. If you want to use GPU, you'll also need [nvidia-docker](https://github.com/NVIDIA/nvidia-docker/wiki/Installation) and [nvidia-docker-compose](https://github.com/eywalker/nvidia-docker-compose#installing).
 
-## Getting Started
+This project use [dobi](https://dnephin.github.io/dobi) to configure the tasks like `run-dev`, `run-prod`, `refresh-backend-dependencies` and so on (`dobi.yaml` has all the tasks). You need to install dobi: [installation instructions](https://dnephin.github.io/dobi/install.html). Then, you just need to type `dobi <command>` to execute the available commands.
 
-Clone the repository to your server with `git clone`. Then, run `docker-compose up` to start the whole project. If you want GPU support, just run `nvidia-docker-compose up` instead. Doing so will startup the Flask Application, the required MongoDB and Redis, The MRQ-Dashboard and the front-end with Angular 4.
+## Contributing
 
-Note that to be able to run any docker command, you need to either use a root user (sudo) or add your user to `docker` group. You can check your user's groups with `groups $USER` and add your user to `docker` group with `sudo usermod -aG docker ${USER}`. After that, you should restart your computer.
+To contribute, clone the repository, run `dobi refresh-backend-dependencies` and open your IDE. For PyCharm, the Docker Compose Python Interpreter will be already defined. You just need to select it in `Settings > Project: pyor > Project Interpreter` and select the `Docker Compose`. Then, you should right click on the `backend` folder and `Mark directory as > Sources root`. After that, you're good to go. To run it in dev on the shell, run `dobi run-dev:attach`. It will run the backend in attached mode.
 
-To access the WEB interface, to to http://localhost:3000.
+The frontend isn't running inside docker in development. So, you should have node installed and run `npm install` and `npm start` inside the `frontend` folder.

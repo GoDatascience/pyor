@@ -1,0 +1,9 @@
+version: '2'
+services:
+  backend:
+    volumes:
+      - ./backend:/opt/pyor/backend:ro
+      - /tmp/pyor/log:/var/log/pyor
+      - ./backend/.conda-env:/opt/conda/envs/pyor
+    environment:
+      - ENV=development
