@@ -6,10 +6,6 @@ import json
 from logging import Logger
 from typing import Dict
 
-import rpy2.rinterface as ri
-import rpy2.robjects as ro
-from rpy2.robjects.vectors import ListVector
-
 import celery
 from celery.utils.log import get_task_logger
 
@@ -50,7 +46,7 @@ def experiment_task(self: BaseTask, id: str):
         return execute_python_script(self, script_path, experiment.params)
     else:
         logger.info("Starting R experiment...")
-        return execute_r__script(self, script_path, experiment.params)
+        return execute_r_script(self, script_path, experiment.params)
 
 def execute_python_script(task: experiment_task, script_path: str, params: Dict):
     spec = importlib.util.spec_from_file_location('task_module', script_path)
@@ -58,7 +54,11 @@ def execute_python_script(task: experiment_task, script_path: str, params: Dict)
     spec.loader.exec_module(task_module)
     return task_module.run(task, params)
 
-def execute_r__script(task: experiment_task, script_path: str, params: Dict):
+def execute_r_script(task: experiment_task, script_path: str, params: Dict):
+    import rpy2.rinterface as ri
+    import rpy2.robjects as ro
+    from rpy2.robjects.vectors import ListVector
+
     ro.globalenv['update_progress'] = ri.rternalize(task.update_progress)
     ro.globalenv['params'] = ListVector(params)
 
