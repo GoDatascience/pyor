@@ -1,0 +1,18 @@
+version: '2'
+services:
+  backend:
+    image: pyor/backend-dist
+    environment:
+      - ENV=production
+  frontend:
+    image: pyor/frontend-dist
+    environment:
+      - NODE_ENV=production
+      - BACKEND_URL=${BACKEND_URL}
+      - DASHBOARD_URL=${DASHBOARD_URL}
+    ports:
+      - "${FRONTEND_PORT}:4200"
+    depends_on:
+      - backend
+    links:
+      - backend

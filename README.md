@@ -16,10 +16,4 @@ In datascience, specially when working with Deep Learning, it's common to run ex
 
 You'll only need [Docker](https://docs.docker.com/engine/installation/) and [Docker Compose](https://docs.docker.com/compose/install/) installed in your computer. If you want to use GPU, you'll also need [nvidia-docker](https://github.com/NVIDIA/nvidia-docker/wiki/Installation) and [nvidia-docker-compose](https://github.com/eywalker/nvidia-docker-compose#installing).
 
-## Getting Started
-
-Clone the repository to your server with `git clone`. Then, run `docker-compose up` to start the whole project. If you want GPU support, just run `nvidia-docker-compose up` instead. Doing so will startup the Flask Application, the required MongoDB and Redis, The MRQ-Dashboard and the front-end with Angular 4.
-
-Note that to be able to run any docker command, you need to either use a root user (sudo) or add your user to `docker` group. You can check your user's groups with `groups $USER` and add your user to `docker` group with `sudo usermod -aG docker ${USER}`. After that, you should restart your computer.
-
-To access the WEB interface, to to http://localhost:3000.
+This project use [dobi](https://dnephin.github.io/dobi) to configure the tasks like `run-dev`, `run-prod`, `refresh-backend-dependencies` and so on (`dobi.yaml` has all the tasks). You need to install dobi: [installation instructions](https://dnephin.github.io/dobi/install.html). Then, you just need to type `dobi <command>` to execute the available commands.

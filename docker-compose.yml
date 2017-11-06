@@ -1,12 +1,8 @@
 version: '2'
 services:
   backend:
-    build:
-      context: ./backend
-      args:
-        - BASE_IMAGE=${BASE_IMAGE}
+    image: pyor/backend
     environment:
-      - ENV=${ENV}
       - MONGO_HOST=${MONGO_HOST}
       - MONGO_PORT=${MONGO_PORT}
       - MONGO_DBNAME=${MONGO_DBNAME}
@@ -18,27 +14,10 @@ services:
       - mongodb
       - rabbitmq
     volumes:
-      - ./backend:/opt/pyor/backend:ro
       - data:/var/pyor
-      - /tmp/pyor/log:/var/log/pyor
     links:
       - mongodb
       - rabbitmq
-  frontend:
-    build:
-      context: ./frontend
-    environment:
-      - NODE_ENV=${ENV}
-      - BACKEND_URL=${BACKEND_URL}
-      - DASHBOARD_URL=${DASHBOARD_URL}
-    ports:
-      - "${FRONTEND_PORT}:4200"
-    depends_on:
-      - backend
-#    volumes:
-#      - ./frontend:/usr/src/app
-    links:
-      - backend
   mongodb:
     image: mongo:latest
     volumes:

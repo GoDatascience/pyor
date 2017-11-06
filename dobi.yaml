@@ -1,0 +1,83 @@
+meta:
+  project: pyor
+
+
+image=backend:
+  image: pyor/backend
+  dockerfile: Dockerfile
+  context: backend/
+  args:
+    BASE_IMAGE: 'ubuntu:16.04'
+  tags:
+    - 'latest'
+
+image=backend-cuda:
+  image: pyor/backend-cuda
+  dockerfile: Dockerfile
+  context: backend/
+  args:
+    BASE_IMAGE: 'nvidia/cuda:9.0-cudnn7-devel'
+  tags:
+    - 'latest'
+
+image=backend-dist:
+  image: pyor/backend-dist
+  dockerfile: Dockerfile.dist
+  context: backend/
+  args:
+    BASE_IMAGE: 'pyor/backend'
+  depends: ['refresh-backend-dependencies']
+  tags:
+    - 'latest'
+
+image=backend-cuda-dist:
+  image: pyor/backend-cuda-dist
+  dockerfile: Dockerfile.dist
+  context: backend/
+  args:
+    BASE_IMAGE: 'pyor/backend-cuda'
+  depends: ['refresh-backend-dependencies', 'backend-cuda:build']
+  tags:
+    - 'latest'
+
+image=frontend-dist:
+  image: pyor/frontend-dist
+  dockerfile: Dockerfile
+  context: frontend/
+  tags:
+    - 'latest'
+
+mount=conda-env:
+  bind: backend/.conda-env
+  path: /opt/conda/envs/pyor
+
+mount=environment:
+  bind: backend/environment.yml
+  path: /opt/pyor/backend/environment.yml
+  read-only: true
+
+job=refresh-backend-dependencies:
+  use: backend
+  mounts: [conda-env, environment]
+  artifact: backend/.conda-env
+  command: conda env update -f environment.yml -n pyor --prune
+
+compose=run-dev:
+  files: [docker-compose.yml, docker-compose-dev.yml]
+  project: 'pyor_dev'
+  depends: ['refresh-backend-dependencies']
+
+compose=run-prod:
+  files: [docker-compose.yml, docker-compose-prod.yml]
+  project: 'pyor_prod'
+  depends: ['backend-dist:build', 'frontend-dist:build']
+
+compose=run-cuda-dev:
+  files: [docker-compose.yml, docker-compose-dev.yml, docker-compose-cuda-dev.yml]
+  project: 'pyor_cuda_dev'
+  depends: ['backend-cuda:build']
+
+compose=run-cuda-prod:
+  files: [docker-compose.yml, docker-compose-prod.yml, docker-compose-cuda-prod.yml]
+  project: 'pyor_cuda_dev'
+  depends: ['backend-cuda-dist:build', 'frontend-dist:build']
