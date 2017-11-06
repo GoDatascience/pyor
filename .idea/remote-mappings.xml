@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteMappingsManager">
+    <list>
+      <list>
+        <remote-mappings server-id="python@docker-compose://[$PROJECT_DIR$/docker-compose.yml, $PROJECT_DIR$/docker-compose-dev.yml]:backend/python">
+          <settings>
+            <list>
+              <mapping local-root="$PROJECT_DIR$/backend" remote-root="/opt/pyor/backend" />
+            </list>
+          </settings>
+        </remote-mappings>
+      </list>
+    </list>
+  </component>
+</project>
