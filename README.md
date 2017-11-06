@@ -20,6 +20,6 @@ This project use [dobi](https://dnephin.github.io/dobi) to configure the tasks l
 
 ## Contributing
 
-To contribute, clone the repository, run `dobi refresh-backend-dependencies` and open your IDE. For PyCharm, the Docker Compose Python Interpreter will be already defined. You just need to select it in `Settings > Project: pyor > Project Interpreter` and select the `Docker Compose`. Then, you should right click on the `backend` folder and `Mark directory as > Sources root`. After that, you're good to go.
+To contribute, clone the repository, run `dobi refresh-backend-dependencies` and open your IDE. For PyCharm, the Docker Compose Python Interpreter will be already defined. You just need to select it in `Settings > Project: pyor > Project Interpreter` and select the `Docker Compose`. Then, you should right click on the `backend` folder and `Mark directory as > Sources root`. After that, you're good to go. To run it in dev on the shell, run `dobi run-dev:attach`. It will run the backend in attached mode.
 
 The frontend isn't running inside docker in development. So, you should have node installed and run `npm install` and `npm start` inside the `frontend` folder.
