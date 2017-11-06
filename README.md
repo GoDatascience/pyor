@@ -16,7 +16,7 @@ In datascience, specially when working with Deep Learning, it's common to run ex
 
 You'll only need [Docker](https://docs.docker.com/engine/installation/) and [Docker Compose](https://docs.docker.com/compose/install/) installed in your computer. If you want to use GPU, you'll also need [nvidia-docker](https://github.com/NVIDIA/nvidia-docker/wiki/Installation) and [nvidia-docker-compose](https://github.com/eywalker/nvidia-docker-compose#installing).
 
-This project use [dobi](https://dnephin.github.io/dobi) to configure the tasks like `run-dev`, `run-prod`, `refresh-backend-dependencies` and so on (`dobi.yaml` has all the tasks). You need to install dobi: [installation instructions](https://dnephin.github.io/dobi/install.html). Then, you just need to type `dobi <command>` to execute the available commands.
+This project use [dobi](https://dnephin.github.io/dobi) to configure the tasks like `run-dev`, `run-prod`, `refresh-backend-dependencies` and so on (`dobi.yaml` has all the tasks). You need to install dobi: [installation instructions](https://dnephin.github.io/dobi/install.html). If you're using linux, you can simply run `curl -L -o /usr/local/bin/dobi "https://github.com/dnephin/dobi/releases/download/v0.10/dobi-$(uname -s)"; chmod +x /usr/local/bin/dobi` to install it. Then, you just need to type `dobi <command>` to execute the available commands.
 
 ## Contributing
 
