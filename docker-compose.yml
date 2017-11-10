@@ -3,25 +3,40 @@ services:
   backend:
     image: pyor/backend
     environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - SALT=${SALT}
       - MONGO_HOST=${MONGO_HOST}
       - MONGO_PORT=${MONGO_PORT}
       - MONGO_DBNAME=${MONGO_DBNAME}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
       - PORT=${BACKEND_PORT}
+      - MAIL_SERVER=${MAIL_SERVER}
+      - MAIL_PORT=${MAIL_PORT}
+      - MAIL_USE_SSL=${MAIL_USE_SSL}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
     ports:
       - "${BACKEND_PORT}:5000"
       - "${DASHBOARD_PORT}:5555"
     depends_on:
       - mongodb
+      - redis
       - rabbitmq
     volumes:
       - data:/var/pyor
     links:
       - mongodb
+      - redis
       - rabbitmq
   mongodb:
     image: mongo:latest
     volumes:
       - mongo_data:/data/db
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis_data:/data
   rabbitmq:
     image: rabbitmq:3-management
     hostname: rabbitmq
@@ -34,4 +49,5 @@ services:
 volumes:
   data:
   mongo_data:
+  redis_data:
   rabbitmq_data:

@@ -64,20 +64,20 @@ job=refresh-backend-dependencies:
 
 compose=run-dev:
   files: [docker-compose.yml, docker-compose-dev.yml]
-  project: 'pyor_dev'
+  project: 'pyor'
   depends: ['refresh-backend-dependencies']
 
 compose=run-prod:
   files: [docker-compose.yml, docker-compose-prod.yml]
-  project: 'pyor_prod'
+  project: 'pyor'
   depends: ['backend-dist:build', 'frontend-dist:build']
 
 compose=run-cuda-dev:
   files: [docker-compose.yml, docker-compose-dev.yml, docker-compose-cuda-dev.yml]
-  project: 'pyor_cuda_dev'
+  project: 'pyor'
   depends: ['backend-cuda:build']
 
 compose=run-cuda-prod:
   files: [docker-compose.yml, docker-compose-prod.yml, docker-compose-cuda-prod.yml]
-  project: 'pyor_cuda_dev'
+  project: 'pyor'
   depends: ['backend-cuda-dist:build', 'frontend-dist:build']

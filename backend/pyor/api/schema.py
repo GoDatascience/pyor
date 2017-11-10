@@ -218,7 +218,6 @@ class SchemaMapper(object):
                     subresource_url = subresource
                     subresource_datasource = {"source": subresource}
 
-                # FIXME what if id is of other type?
                 _url = '%s/<regex("[a-f0-9]{24}"):%s>/%s'
                 subresource_settings['url'] = _url % (subresource_url, fname,
                                                       resource_name+"s")
