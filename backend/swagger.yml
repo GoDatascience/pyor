@@ -13,10 +13,240 @@ consumes:
 - application/json
 produces:
 - application/json
+securityDefinitions:
+  OAuth2Implicit:
+    type: oauth2
+    flow: implicit
+    authorizationUrl: localhost:5000/oauth/authorize
+    scopes:
+      role:read: Grants read access to roles
+      role:write: Grants write access to roles
+      user:read: Grants read access to users
+      user:write: Grants write access to users
+      queue:read: Grants read access to queues
+      queue:write: Grants write access to queues
+      worker:read: Grants read access to workers
+      worker:write: Grants write access to workers
+      taskfile:read: Grants read access to taskfiles
+      taskfile:write: Grants write access to taskfiles
+      task:read: Grants read access to tasks
+      task:write: Grants write access to tasks
+      experiment:read: Grants read access to experiments
+      experiment:write: Grants write access to experiments
+  OAuth2AccessCode:
+    type: oauth2
+    flow: accessCode
+    authorizationUrl: localhost:5000/oauth/authorize
+    tokenUrl: localhost:5000/oauth/token
+    scopes:
+      role:read: Grants read access to roles
+      role:write: Grants write access to roles
+      user:read: Grants read access to users
+      user:write: Grants write access to users
+      queue:read: Grants read access to queues
+      queue:write: Grants write access to queues
+      worker:read: Grants read access to workers
+      worker:write: Grants write access to workers
+      taskfile:read: Grants read access to taskfiles
+      taskfile:write: Grants write access to taskfiles
+      task:read: Grants read access to tasks
+      task:write: Grants write access to tasks
+      experiment:read: Grants read access to experiments
+      experiment:write: Grants write access to experiments
+  OAuth2Password:
+    type: oauth2
+    flow: password
+    authorizationUrl: localhost:5000/oauth/authorize
+    tokenUrl: localhost:5000/oauth/token
+    scopes:
+      role:read: Grants read access to roles
+      role:write: Grants write access to roles
+      user:read: Grants read access to users
+      user:write: Grants write access to users
+      queue:read: Grants read access to queues
+      queue:write: Grants write access to queues
+      worker:read: Grants read access to workers
+      worker:write: Grants write access to workers
+      taskfile:read: Grants read access to taskfiles
+      taskfile:write: Grants write access to taskfiles
+      task:read: Grants read access to tasks
+      task:write: Grants write access to tasks
+      experiment:read: Grants read access to experiments
+      experiment:write: Grants write access to experiments
 paths:
+  "/roles":
+    get:
+      summary: Retrieves one or more roles
+      security:
+        - OAuth2Implicit: [role:read]
+        - OAuth2AccessCode: [role:read]
+        - OAuth2Password: [role:read]
+      parameters:
+      - "$ref": "#/parameters/page"
+      - "$ref": "#/parameters/max_results"
+      - "$ref": "#/parameters/embedded"
+      - "$ref": "#/parameters/sort"
+      - "$ref": "#/parameters/where"
+      - "$ref": "#/parameters/projection"
+      responses:
+        '200':
+          description: An array of queues
+          schema:
+            "$ref": "#/definitions/RoleCollection"
+        '400':
+          "$ref": "#/responses/BadRequest"
+      tags:
+      - Role
+    post:
+      summary: Stores one or more roles
+      security:
+        - OAuth2Implicit: [role:write]
+        - OAuth2AccessCode: [role:write]
+        - OAuth2Password: [role:write]
+      parameters:
+      - in: body
+        name: Role
+        required: true
+        schema:
+          "$ref": "#/definitions/Role"
+      responses:
+        '201':
+          "$ref": "#/responses/Created"
+        '400':
+          "$ref": "#/responses/BadRequest"
+        '404':
+          "$ref": "#/responses/NotFound"
+        '422':
+          "$ref": "#/responses/ValidationError"
+      tags:
+      - Role
+  "/roles/{roleId}":
+    get:
+      summary: Retrieves a Role document
+      security:
+        - OAuth2Implicit: [role:read]
+        - OAuth2AccessCode: [role:read]
+        - OAuth2Password: [role:read]
+      responses:
+        '200':
+          description: Role document fetched successfully
+          schema:
+            "$ref": "#/definitions/Role"
+        '400':
+          "$ref": "#/responses/BadRequest"
+        '404':
+          "$ref": "#/responses/NotFound"
+      parameters:
+      - "$ref": "#/parameters/Role__id"
+      - "$ref": "#/parameters/embedded"
+      tags:
+      - Role
+    delete:
+      summary: Deletes a Role document
+      security:
+        - OAuth2Implicit: [role:write]
+        - OAuth2AccessCode: [role:write]
+        - OAuth2Password: [role:write]
+      responses:
+        '204':
+          description: Role document deleted successfully
+        '404':
+          "$ref": "#/responses/NotFound"
+      parameters:
+      - "$ref": "#/parameters/if_match"
+      - "$ref": "#/parameters/Role__id"
+      tags:
+      - Role
+  "/users":
+    get:
+      summary: Retrieves one or more users
+      security:
+        - OAuth2Implicit: [user:read]
+        - OAuth2AccessCode: [user:read]
+        - OAuth2Password: [user:read]
+      parameters:
+      - "$ref": "#/parameters/page"
+      - "$ref": "#/parameters/max_results"
+      - "$ref": "#/parameters/embedded"
+      - "$ref": "#/parameters/sort"
+      - "$ref": "#/parameters/where"
+      - "$ref": "#/parameters/projection"
+      responses:
+        '200':
+          description: An array of queues
+          schema:
+            "$ref": "#/definitions/UserCollection"
+        '400':
+          "$ref": "#/responses/BadRequest"
+      tags:
+      - User
+    post:
+      summary: Stores one or more users and sends confirmation mail(s)
+      security:
+        - OAuth2Implicit: [user:write]
+        - OAuth2AccessCode: [user:write]
+        - OAuth2Password: [user:write]
+      parameters:
+      - in: body
+        name: User
+        required: true
+        schema:
+          "$ref": "#/definitions/User"
+      responses:
+        '201':
+          "$ref": "#/responses/Created"
+        '400':
+          "$ref": "#/responses/BadRequest"
+        '404':
+          "$ref": "#/responses/NotFound"
+        '422':
+          "$ref": "#/responses/ValidationError"
+      tags:
+      - User
+  "/users/{userId}":
+    get:
+      summary: Retrieves a User document
+      security:
+        - OAuth2Implicit: [user:read]
+        - OAuth2AccessCode: [user:read]
+        - OAuth2Password: [user:read]
+      responses:
+        '200':
+          description: User document fetched successfully
+          schema:
+            "$ref": "#/definitions/User"
+        '400':
+          "$ref": "#/responses/BadRequest"
+        '404':
+          "$ref": "#/responses/NotFound"
+      parameters:
+      - "$ref": "#/parameters/User__id"
+      - "$ref": "#/parameters/embedded"
+      tags:
+      - User
+    delete:
+      summary: Deletes a User document
+      security:
+        - OAuth2Implicit: [user:write]
+        - OAuth2AccessCode: [user:write]
+        - OAuth2Password: [user:write]
+      responses:
+        '204':
+          description: User document deleted successfully
+        '404':
+          "$ref": "#/responses/NotFound"
+      parameters:
+      - "$ref": "#/parameters/if_match"
+      - "$ref": "#/parameters/User__id"
+      tags:
+      - User
   "/queues":
     get:
       summary: Retrieves one or more queues
+      security:
+        - OAuth2Implicit: [queue:read]
+        - OAuth2AccessCode: [queue:read]
+        - OAuth2Password: [queue:read]
       parameters:
       - "$ref": "#/parameters/page"
       - "$ref": "#/parameters/max_results"
@@ -35,6 +265,10 @@ paths:
       - Queue
     post:
       summary: Stores one or more queues
+      security:
+        - OAuth2Implicit: [queue:write]
+        - OAuth2AccessCode: [queue:write]
+        - OAuth2Password: [queue:write]
       parameters:
       - in: body
         name: Queue
@@ -55,6 +289,10 @@ paths:
   "/queues/{queueId}":
     get:
       summary: Retrieves a Queue document
+      security:
+        - OAuth2Implicit: [queue:read]
+        - OAuth2AccessCode: [queue:read]
+        - OAuth2Password: [queue:read]
       responses:
         '200':
           description: Queue document fetched successfully
@@ -71,6 +309,10 @@ paths:
       - Queue
     put:
       summary: Replaces a Queue document
+      security:
+        - OAuth2Implicit: [queue:write]
+        - OAuth2AccessCode: [queue:write]
+        - OAuth2Password: [queue:write]
       responses:
         '200':
           "$ref": "#/responses/Updated"
@@ -92,6 +334,10 @@ paths:
       - Queue
     delete:
       summary: Deletes a Queue document
+      security:
+        - OAuth2Implicit: [queue:write]
+        - OAuth2AccessCode: [queue:write]
+        - OAuth2Password: [queue:write]
       responses:
         '204':
           description: Queue document deleted successfully
@@ -105,6 +351,10 @@ paths:
   "/workers":
     get:
       summary: Retrieves one or more workers
+      security:
+        - OAuth2Implicit: [worker:read]
+        - OAuth2AccessCode: [worker:read]
+        - OAuth2Password: [worker:read]
       parameters:
       - "$ref": "#/parameters/page"
       - "$ref": "#/parameters/max_results"
@@ -123,6 +373,10 @@ paths:
       - Worker
     post:
       summary: Stores one or more workers
+      security:
+        - OAuth2Implicit: [worker:write]
+        - OAuth2AccessCode: [worker:write]
+        - OAuth2Password: [worker:write]
       parameters:
       - in: body
         name: Worker
@@ -143,6 +397,10 @@ paths:
   "/workers/{workerId}":
     get:
       summary: Retrieves a Worker document
+      security:
+        - OAuth2Implicit: [worker:read]
+        - OAuth2AccessCode: [worker:read]
+        - OAuth2Password: [worker:read]
       responses:
         '200':
           description: Worker document fetched successfully
@@ -159,6 +417,10 @@ paths:
       - Worker
     put:
       summary: Replaces a Worker document
+      security:
+        - OAuth2Implicit: [worker:write]
+        - OAuth2AccessCode: [worker:write]
+        - OAuth2Password: [worker:write]
       responses:
         '200':
           "$ref": "#/responses/Updated"
@@ -180,6 +442,10 @@ paths:
       - Worker
     delete:
       summary: Deletes a Worker document
+      security:
+        - OAuth2Implicit: [worker:write]
+        - OAuth2AccessCode: [worker:write]
+        - OAuth2Password: [worker:write]
       responses:
         '204':
           description: Worker document deleted successfully
@@ -193,6 +459,10 @@ paths:
   "/taskfiles":
     get:
       summary: Retrieves one or more taskfiles
+      security:
+        - OAuth2Implicit: [taskfile:read]
+        - OAuth2AccessCode: [taskfile:read]
+        - OAuth2Password: [taskfile:read]
       parameters:
       - "$ref": "#/parameters/page"
       - "$ref": "#/parameters/max_results"
@@ -211,6 +481,10 @@ paths:
       - TaskFile
     post:
       summary: Uploads script and auxiliar files, creating an TaskFile register
+      security:
+        - OAuth2Implicit: [taskfile:write]
+        - OAuth2AccessCode: [taskfile:write]
+        - OAuth2Password: [taskfile:write]
       consumes:
         - multipart/form-data
       parameters:
@@ -233,6 +507,10 @@ paths:
   "/taskfiles/{taskfileId}":
     get:
       summary: Retrieves a TaskFile document
+      security:
+        - OAuth2Implicit: [taskfile:read]
+        - OAuth2AccessCode: [taskfile:read]
+        - OAuth2Password: [taskfile:read]
       responses:
         '200':
           description: TaskFile document fetched successfully
@@ -249,6 +527,10 @@ paths:
       - TaskFile
     delete:
       summary: Deletes a TaskFile document
+      security:
+        - OAuth2Implicit: [taskfile:write]
+        - OAuth2AccessCode: [taskfile:write]
+        - OAuth2Password: [taskfile:write]
       responses:
         '204':
           description: TaskFile document deleted successfully
@@ -262,6 +544,10 @@ paths:
   "/tasks":
     get:
       summary: Retrieves one or more tasks
+      security:
+        - OAuth2Implicit: [task:read]
+        - OAuth2AccessCode: [task:read]
+        - OAuth2Password: [task:read]
       parameters:
       - "$ref": "#/parameters/page"
       - "$ref": "#/parameters/max_results"
@@ -280,6 +566,10 @@ paths:
       - Task
     post:
       summary: Stores one or more tasks
+      security:
+        - OAuth2Implicit: [task:write]
+        - OAuth2AccessCode: [task:write]
+        - OAuth2Password: [task:write]
       parameters:
       - in: body
         name: Task
@@ -300,6 +590,10 @@ paths:
   "/tasks/{taskId}":
     get:
       summary: Retrieves a Task document
+      security:
+        - OAuth2Implicit: [task:read]
+        - OAuth2AccessCode: [task:read]
+        - OAuth2Password: [task:read]
       responses:
         '200':
           description: Task document fetched successfully
@@ -320,6 +614,10 @@ paths:
       - Task
     put:
       summary: Replaces a Task document
+      security:
+        - OAuth2Implicit: [task:write]
+        - OAuth2AccessCode: [task:write]
+        - OAuth2Password: [task:write]
       responses:
         '200':
           "$ref": "#/responses/Updated"
@@ -341,6 +639,10 @@ paths:
       - Task
     delete:
       summary: Deletes a Task document
+      security:
+        - OAuth2Implicit: [task:write]
+        - OAuth2AccessCode: [task:write]
+        - OAuth2Password: [task:write]
       responses:
         '204':
           description: Task document deleted successfully
@@ -354,6 +656,10 @@ paths:
   /taskfiles/{taskfileId}/tasks:
     get:
       summary: Retrieves one or more tasks
+      security:
+        - OAuth2Implicit: [task:read]
+        - OAuth2AccessCode: [task:read]
+        - OAuth2Password: [task:read]
       parameters:
       - "$ref": "#/parameters/TaskFile__id"
       - "$ref": "#/parameters/page"
@@ -376,6 +682,10 @@ paths:
   "/experiments":
     get:
       summary: Retrieves one or more experiments
+      security:
+        - OAuth2Implicit: [experiment:read]
+        - OAuth2AccessCode: [experiment:read]
+        - OAuth2Password: [experiment:read]
       parameters:
       - "$ref": "#/parameters/page"
       - "$ref": "#/parameters/max_results"
@@ -394,6 +704,10 @@ paths:
       - Experiment
     post:
       summary: Stores one or more experiments
+      security:
+        - OAuth2Implicit: [experiment:write]
+        - OAuth2AccessCode: [experiment:write]
+        - OAuth2Password: [experiment:write]
       parameters:
       - in: body
         name: Experiment
@@ -414,6 +728,10 @@ paths:
   "/experiments/{experimentId}":
     get:
       summary: Retrieves a Experiment document
+      security:
+        - OAuth2Implicit: [experiment:read]
+        - OAuth2AccessCode: [experiment:read]
+        - OAuth2Password: [experiment:read]
       responses:
         '200':
           description: Experiment document fetched successfully
@@ -430,6 +748,10 @@ paths:
       - Experiment
     delete:
       summary: Deletes a Experiment document
+      security:
+        - OAuth2Implicit: [experiment:write]
+        - OAuth2AccessCode: [experiment:write]
+        - OAuth2Password: [experiment:write]
       responses:
         '204':
           description: Experiment document deleted successfully
@@ -443,6 +765,10 @@ paths:
   /tasks/{taskId}/experiments:
     get:
       summary: Retrieves one or more experiments from the given task
+      security:
+        - OAuth2Implicit: [experiment:write]
+        - OAuth2AccessCode: [experiment:write]
+        - OAuth2Password: [experiment:write]
       parameters:
       - "$ref": "#/parameters/Task__id"
       - "$ref": "#/parameters/page"
@@ -465,6 +791,10 @@ paths:
   /queues/{queueId}/experiments:
     get:
       summary: Retrieves one or more experiments from the given queue
+      security:
+        - OAuth2Implicit: [experiment:read]
+        - OAuth2AccessCode: [experiment:read]
+        - OAuth2Password: [experiment:read]
       parameters:
       - "$ref": "#/parameters/Queue__id"
       - "$ref": "#/parameters/page"
@@ -506,13 +836,74 @@ responses:
     schema:
       "$ref": "#/definitions/ApiResponse"
 definitions:
+  Role:
+    type: object
+    properties:
+      _id:
+        type: string
+        format: objectid
+        readOnly: true
+      name:
+        maxLength: 80
+        type: string
+      description:
+        maxLength: 255
+        type: string
+      allowed_scopes:
+        type: array
+        items:
+          enum:
+          - user:write
+          - user:read
+          - queue:write
+          - queue:read
+          - worker:write
+          - worker:read
+          - taskfile:write
+          - taskfile:read
+          - task:write
+          - task:read
+          - experiment:write
+          - experiment:read
+          type: string
+  User:
+    type: object
+    properties:
+      _id:
+        type: string
+        format: objectid
+        readOnly: true
+      name:
+        maxLength: 255
+        type: string
+      email:
+        maxLength: 255
+        type: string
+      password:
+        maxLength: 255
+        type: string
+      active:
+        type: boolean
+      confirmed_at:
+        readOnly: true
+        type: string
+        format: date-time
+      roles:
+        type: array
+        items:
+          type: string
+          format: objectid
+    required:
+    - email
+    - password
   Queue:
     type: object
     properties:
       name:
         type: string
       _id:
-        "$ref": "#/definitions/Queue__id"
+        type: string
+        format: objectid
         readOnly: true
       _updated:
         readOnly: true
@@ -563,7 +954,8 @@ definitions:
       data:
         "$ref": "#/definitions/FileSource"
       _id:
-        "$ref": "#/definitions/TaskFile__id"
+        type: string
+        format: objectid
         readOnly: true
       _updated:
         readOnly: true
@@ -605,7 +997,8 @@ definitions:
           - name
           - type
       _id:
-        "$ref": "#/definitions/Task__id"
+        type: string
+        format: objectid
         readOnly: true
       _updated:
         readOnly: true
@@ -733,6 +1126,38 @@ definitions:
   Queue__id:
     type: string
     format: objectid
+  RoleCollection:
+    type: object
+    properties:
+      _items:
+        type: array
+        items:
+          "$ref": "#/definitions/Role"
+      _meta:
+        type: object
+        properties:
+          page:
+            type: integer
+          max_results:
+            type: integer
+          total:
+            type: integer
+  UserCollection:
+    type: object
+    properties:
+      _items:
+        type: array
+        items:
+          "$ref": "#/definitions/User"
+      _meta:
+        type: object
+        properties:
+          page:
+            type: integer
+          max_results:
+            type: integer
+          total:
+            type: integer
   QueueCollection:
     type: object
     properties:
@@ -865,6 +1290,20 @@ definitions:
         description: Responses for each resource included in the BULK INSERT.
 
 parameters:
+  Role__id:
+    in: path
+    name: roleId
+    required: true
+    description: ''
+    type: string
+    format: objectid
+  User__id:
+    in: path
+    name: userId
+    required: true
+    description: ''
+    type: string
+    format: objectid
   Queue__id:
     in: path
     name: queueId
@@ -936,6 +1375,8 @@ parameters:
     type: string
     description: Current value of the _etag field
 tags:
+- name: Role
+- name: User
 - name: Queue
 - name: Worker
 - name: TaskFile

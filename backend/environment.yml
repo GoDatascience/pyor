@@ -8,7 +8,9 @@ dependencies:
 - pip
 # Backend
 - flask-cors=3.0.3
-- ujson==1.35
+- ujson=1.35
+- bcrypt=3.1.4
+- redis-py=2.10.6
 # Workers
 ## Python
 - pandas=0.20.3
@@ -59,4 +61,6 @@ dependencies:
   - eve==0.7.4
   - eve-swagger==0.0.8
   - flask-script==2.0.6
+  - Flask-OAuthlib==0.9.4
+  - Flask-Security==3.0.0
   # Workers

@@ -7,3 +7,30 @@ services:
       - ./backend/.conda-env:/opt/conda/envs/pyor
     environment:
       - ENV=development
+      - FRONTEND_URL=$HOST:$FRONTEND_PORT
+      - MAIL_SERVER=fakesmtp
+      - MAIL_PORT=5025
+      - MAIL_USE_SSL=False
+      - MAIL_USE_TLS=False
+      - MAIL_DEFAULT_SENDER=test@localhost
+    depends_on:
+      - fakesmtp
+    links:
+      - fakesmtp
+  fakesmtp:
+    image: gessnerfl/fake-smtp-server
+    environment:
+      - fakesmtp.port=5025
+      - server.port=5080
+      - management.port=5081
+    ports:
+      - 5080:5080
+      - 5081:5081
+  swagger_ui:
+    image: swaggerapi/swagger-ui
+    environment:
+      - API_URL=http://localhost:3200/swagger.yml
+    ports:
+      - 3200:8080
+    volumes:
+      - ./backend/swagger.yml:/usr/share/nginx/html/swagger.yml

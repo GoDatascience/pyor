@@ -1,5 +1,13 @@
+import bcrypt
+
 from pyor.celery.tasks import experiment_task
-from pyor.models import Experiment
+from pyor.models import Experiment, User
+
+
+def insert_user(username:str, password:str):
+    salt = bcrypt.gensalt()
+    hash = bcrypt.hashpw(password.encode('utf-8'), salt)
+    User(username=username, password=hash).save()
 
 
 def enqueue_experiment(id: str):
